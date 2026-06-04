@@ -115,7 +115,7 @@ section {
     background: linear-gradient(135deg, #FDFCF9 0%, #FFF5EC 100%);
 }
 .hero-content {
-    max-width: 600px;
+    max-width: 700px;
 }
 .badge {
     display: inline-block;
@@ -131,6 +131,7 @@ section {
     font-size: 4rem;
     margin-bottom: 1.5rem;
     letter-spacing: -1px;
+    word-break: keep-all;
 }
 .hero p {
     font-size: 1.25rem;
