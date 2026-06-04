@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 수업: js 활용</title>
+    
+    <script>
+        function showDialog(){
+            alert("안녕하세요?");
+        }
+
+        function greeting(name, position){
+            alert(name + " " + position + "님을 환영합니다.");
+        }
+
+        function promptSum() {
+            var x, y, input;
+            input = prompt("첫 번째 정수를 입력하시오", "0");
+            x = parseInt(input) || 0; 
+
+            input = prompt("두 번째 정수를 입력하시오", "0");
+            y = parseInt(input) || 0;
+
+            alert("두 숫자의 합은 " + (x + y) + " 입니다!");
+        }
+
+        function calc() {
+            var valX = document.myform.x.value || 0;
+            var valY = document.myform.y.value || 0;
+            var result = parseInt(valX) + parseInt(valY);
+            document.myform.sum.value = result;
+        }
+
+        // ✨ 숫자 맞추기 게임 로직 수정 ✨
+        var computerNumber = 24;
+        var nGuesses = 0;
+        
+        function guess() {
+            var result = "";
+            // 오타 수정: paeseInt -> parseInt, getElementByld -> getElementById
+            var number = parseInt(document.getElementById("user").value);
+            nGuesses++;
+
+            // 입력값이 숫자가 아닐 경우의 예외 처리 추가
+            if (isNaN(number)) {
+                result = "숫자를 입력하세요!";
+                nGuesses--; // 잘못 입력한 건 횟수에서 빼주기
+            } else if(number === computerNumber) {
+                result = "성공입니다!";
+            } else if(number < computerNumber) {
+                result = "낮습니다.";
+            } else {
+                result = "높습니다.";
+            }
+
+            // 오타 수정: getElementByld -> getElementById
+            document.getElementById("result").value = result;
+            document.getElementById("guesses").value = nGuesses;
+            return true;
+        }
+
+        function checkDate(){
+            var s = document.getElementById("pdate").value;
+            var pdate = new Date(s);
+            var today = new Date();
+            var diff = today.getTime() - pdate.getTime();
+            var days = Math.floor(diff / (1000*60 *60 *24));
+
+            if (days >30) {
+                alert("교환 기한이 지났습니다.");
+            }       
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        /* 전체 배경 및 기본 폰트 설정 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #faf7f4;
+            margin: 0;
+            padding: 40px 20px;
+            word-break: keep-all;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 { color: #705a4e; font-size: 1.2rem; margin-bottom: 10px; }
+        h2 { color: #2c2a2a; font-size: 2rem; margin-top: 0; padding-bottom: 15px; border-bottom: 2px solid #f4d1a0; }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4a4143;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #eadbc8;
+            padding-bottom: 8px;
+        }
+
+        /* 버튼 테마 꾸미기 */
+        button, input[type="button"] {
+            background-color: #fff3e0;
+            color: #e65100;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-right: 5px;
+            margin-bottom: 10px;
+        }
+
+        button:hover, input[type="button"]:hover {
+            background-color: #ffe0b2;
+            color: #bf360c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(230, 81, 0, 0.15);
+        }
+
+        /* 폼(Form)과 입력창(Input) 테마 꾸미기 */
+        form {
+            background-color: #faf5f0;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid #eadbc8;
+        }
+
+        .form-row { margin-bottom: 15px; }
+
+        .form-row label {
+            display: inline-block;
+            width: 100px;
+            font-weight: bold;
+            color: #4a4143;
+        }
+
+        input[type="text"], input[type="number"], input[id="x"], input[id="y"], input[id="sum"] {
+            padding: 10px 12px;
+            border: 1px solid #eadbc8;
+            border-radius: 6px;
+            font-family: inherit;
+            color: #333;
+            width: calc(100% - 130px);
+            max-width: 200px;
+            transition: border-color 0.3s;
+        }
+
+        /* 게임 전용 입력창 너비 조절 */
+        #user { max-width: 100px; }
+        #guesses, #result { background-color: #f4efea; font-weight: bold; max-width: 150px;}
+        #result { color: #e65100; }
+
+        input:focus {
+            outline: none;
+            border-color: #e65100;
+            box-shadow: 0 0 5px rgba(230, 81, 0, 0.2);
+        }
+
+        #sum { background-color: #f4efea; font-weight: bold; color: #e65100; }
+
+        /* 홈으로 돌아가기 버튼 */
+        .back-btn-container { text-align: center; margin-top: 60px; }
+
+        .back-btn {
+            display: inline-block;
+            background-color: #fff3e0;
+            color: #e65100;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #ffe0b2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(230, 81, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 30px 20px; }
+            h2 { font-size: 1.6rem; }
+            .form-row label { display: block; margin-bottom: 5px; }
+            input[type="text"], input[id="x"], input[id="y"], input[id="sum"] { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>오늘의 수업은??</h1>
+        <h2>자바스크립트(JS) 활용</h2>
+
+        <div class="section-title">알림창(Alert) 연습</div>
+        <button onclick="showDialog()">대화상자 오픈</button>
+        <button onclick="greeting('홍길동', '부장')">직급 환영인사</button>
+
+        <div class="section-title">입력창(Prompt) 연습</div>
+        <button onclick="promptSum()">두 정수 더하기 (Prompt)</button>
+
+        <div class="section-title">문서 내 계산기 (Form)</div>
+        <form name="myform" action="..." method="POST">
+            <div class="form-row">
+                <label for="x">첫번째 정수</label>
+                <input id="x" name="x" type="number" placeholder="숫자 입력" />
+            </div>
+            <div class="form-row">
+                <label for="y">두번째 정수</label>
+                <input id="y" name="y" type="number" placeholder="숫자 입력" />
+            </div>
+            <div class="form-row">
+                <label for="sum">합계 결과</label>
+                <input id="sum" name="sum" type="text" readonly placeholder="결과가 나옵니다" />
+            </div>
+            <div style="margin-top: 20px;">
+                <input type="button" value="계산하기" onclick="calc();" />
+            </div>
+        </form>
+
+        <div class="section-title">김영민의 나이 맞추기 게임</div>
+        <p>이 게임은 김영민의 나이이를 맞추는 게임입니다. 숫자는 1부터 100 사이에 있습니다.</p>
+        
+        <form name="gameform" action="..." method="POST">
+            <div class="form-row">
+                <label for="user">숫자 입력</label>
+                <input type="number" id="user" placeholder="1~100" />
+                <input type="button" value="확인" onclick="guess();" style="margin-bottom: 0;" />
+            </div>
+            <div class="form-row">
+                <label for="guesses">추측 횟수</label>
+                <input type="text" id="guesses" readonly />
+            </div>
+            <div class="form-row">
+                <label for="result">힌트</label>
+                <input type="text" id="result" readonly />
+            </div>
+        </form>
+        <div class="section-title">환불 가능 여부  체크</div>
+                구입날짜:
+                <input type="date" id="pdate" name="pdate">
+                <button onclick="javascripts:checkDate()">검사</button>
+
+        <div class="back-btn-container">
+            <a href="setup-finish.html" class="back-btn">🏠 메인 홈으로 돌아가기</a>
+        </div>
+        
+    </div>
+</body>
+
+</html>

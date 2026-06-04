@@ -1,0 +1,488 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘은 고양이</title>
+    <style>
+        /* ✨ 1. 구글 폰트(노토 산스 KR) 불러오기! (굵기 400, 500, 700 포함) */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        /* 전체 배경 및 기본 폰트 설정 (0323 테마) */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #faf7f4; /* 아주 연한 크림빛/아이보리 배경 */
+            margin: 0;
+            padding: 40px 20px;
+            word-break: keep-all;
+        }
+
+        /* 콘텐츠를 감싸는 중앙 정렬 박스 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 제목 스타일링 (0323 테마 일치) */
+        h1 {
+            color: #705a4e;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c2a2a;
+            font-size: 2rem;
+            margin-top: 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f4d1a0;
+        }
+
+        /* 소제목(섹션 타이틀) 스타일링 */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4a4143;
+            margin-top: 50px;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #eadbc8;
+            padding-bottom: 8px;
+        }
+
+        /* 강조 및 본문 텍스트 */
+        mark {
+            background-color: #fff3e0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e65100;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+            margin-bottom: 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        /* 하이퍼링크 스타일링 (주황색 포인트) */
+        a {
+            color: #e65100;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #bf360c;
+            text-decoration: underline;
+        }
+
+        /* 구분선 스타일 */
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #eadbc8;
+            margin: 40px 0;
+        }
+
+        /* 돌아가기 버튼 스타일 (0323 테마) */
+        .back-btn-container {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: #fff3e0;
+            color: #e65100;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(230, 81, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #ffe0b2;
+            color: #bf360c;
+            text-decoration: none;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(230, 81, 0, 0.2);
+        }
+
+        /* ✨ 반응형 이미지 맵 스타일 ✨ */
+        .image-map-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .image-map-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .click-area {
+            position: absolute;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px dashed rgba(230, 81, 0, 0.6);
+            transition: background-color 0.3s;
+        }
+
+        .click-area:hover {
+            background-color: rgba(230, 81, 0, 0.2);
+        }
+
+        .area-face { top: 70%; left: 30%; width: 20%; height: 20%; }
+        .area-body { top: 40%; left: 55%; width: 30%; height: 30%; }
+        .area-foot { top: 80%; left: 80%; width: 15%; height: 15%; }
+
+        /* 피규어 및 캡션 */
+        figure {
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        figcaption {
+            color: #705a4e;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            background-color: #faf5f0;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* ✨ 폼(Form) 요소들을 0323 테마에 맞춰 예쁘게 스타일링 ✨ */
+        form {
+            background-color: #faf5f0;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid #eadbc8;
+        }
+
+        fieldset {
+            border: 1px solid #eadbc8;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #e65100;
+            background-color: #fff3e0;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 1.05rem;
+        }
+
+        form ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        form li {
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #4a4143;
+            font-weight: 600;
+            margin-right: 10px;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"], 
+        input[type="tel"], input[type="date"], input[type="time"], 
+        input[type="datetime-local"], select {
+            padding: 10px 12px;
+            border: 1px solid #eadbc8;
+            border-radius: 6px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #333;
+            background-color: #ffffff;
+            transition: border-color 0.3s;
+            width: calc(100% - 130px); /* 모바일에서도 잘 맞도록 계산 */
+            max-width: 300px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #e65100;
+            box-shadow: 0 0 5px rgba(230, 81, 0, 0.2);
+        }
+
+        input[type="submit"], input[type="reset"], button {
+            background-color: #fff3e0;
+            color: #e65100;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"]:hover, input[type="reset"]:hover {
+            background-color: #ffe0b2;
+            color: #bf360c;
+            transform: translateY(-2px);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: #e65100; /* 체크박스/라디오 색상을 주황색으로 */
+        }
+
+        /* 모바일 기기 최적화 */
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .container { padding: 30px 20px; border-radius: 12px; }
+            h2 { font-size: 1.6rem; }
+            .section-title { font-size: 1.2rem; }
+            label { display: block; margin-bottom: 5px; }
+            input[type="text"], input[type="password"], input[type="number"], 
+            input[type="tel"], input[type="date"], input[type="time"], 
+            input[type="datetime-local"], select {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .back-btn { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>오늘의 수업은??</h1>
+        <h2>나는 고양이로소이다</h2>
+
+        <figure>
+            <div class="image-map-container">
+                <img src="images/ddungddi.jpg" alt="뚱띠 엉덩이" />
+                <a href="#content1" class="click-area area-face" title="뚱띠 얼굴"></a>
+                <a href="#content2" class="click-area area-body" title="뚱띠 몸매"></a>
+                <a href="#content3" class="click-area area-foot" title="뚱띠 발"></a>
+            </div>
+            <figcaption>완만하고 부드러운 뚱띠의 <b>엉덩이</b></figcaption>
+        </figure>
+
+        <hr>
+
+        <div class="section-title">텍스트 링크 만들기</div>
+        <p><a href="https://namu.wiki/w/%EB%82%98%EB%8A%94%20%EA%B3%A0%EC%96%91%EC%9D%B4%EB%A1%9C%EC%86%8C%EC%9D%B4%EB%8B%A4">뚱띠 (현재 창에서 열기)</a></p>
+        <p><a href="https://namu.wiki/w/%EB%82%98%EB%8A%94%20%EA%B3%A0%EC%96%91%EC%9D%B4%EB%A1%9C%EC%86%8C%EC%9D%B4%EB%8B%A4" target="_blank">뚱띠 (새 창에서 열기)</a></p>
+
+        <div class="section-title">앵커 만들기 (메뉴)</div>
+        <ul id="menu">
+            <li><a href="#content1">안녕하세유</a></li>
+            <li><a href="#content2">감사해유</a></li>
+            <li><a href="#content3">다시만나유</a></li>
+        </ul>
+
+        <div class="section-title" id="content1">안녕하세유</div>
+        <figure>
+            <img src="images/face.jpg" width="400" height="300" alt="뚱띠 얼굴" />
+            <figcaption>저는 광희문에 살았는데유.</figcaption>
+        </figure>
+        <p><a href="#menu">메뉴로 돌아가기 ⬆️</a></p>
+
+        <div class="section-title" id="content2">감사해유</div>
+        <figure>
+            <img src="images/ddung.jpg" width="400" height="600" alt="뚱띠 몸매" />
+            <figcaption>늘 사람들이 저를 보면 엉덩이를 쳐줘유.</figcaption>
+        </figure>
+        <p><a href="#menu">메뉴로 돌아가기 ⬆️</a></p>
+
+        <div class="section-title" id="content3">다시만나유</div>
+        <figure>
+            <img src="images/foot.jpg" width="400" height="600" alt="뚱띠 발" />
+            <figcaption>이제는 누군가의 집에 살고 있지만 또 만나러 올게유.</figcaption>
+        </figure>
+        <p><a href="#menu">메뉴로 돌아가기 ⬆️</a></p>
+
+        <hr>
+
+        <div class="section-title">인풋 및 폼(Form) 연습</div>
+        
+        <form action="search.php" method="post">
+            <label for="search-box">검색어</label>
+            <input type="text" id="search-box" title="검색" placeholder="검색어를 입력하세요" />
+            <input type="submit" value="검색하기" />
+        </form>
+
+        <form>
+            <fieldset>
+             <legend>로그인 정보</legend>
+             <ul>
+                 <li>
+                     <label for="id">아이디</label>
+                     <input type="text" id="id" placeholder="6자 이상 입력" />
+                 </li>
+                 <li>
+                     <label for="pwd1">비밀번호</label>
+                     <input type="password" id="pwd1" />
+                 </li>
+                 <li>
+                     <label for="pwd2">비밀번호 확인</label>
+                     <input type="password" id="pwd2" />
+                 </li>
+             </ul>
+            </fieldset>
+
+            <fieldset>
+                <legend>개인 정보</legend>
+                <ul>
+                    <li>
+                        <label for="name">이름</label>
+                        <input type="text" id="name" />
+                    </li>
+                    <li>
+                        <label for="mail">주민번호</label>
+                        <input type="text" id="mail" />
+                    </li>
+                    <li>
+                        <label for="phone">카드 번호</label>
+                        <input type="tel" id="phone" />
+                    </li>
+                    <li>
+                        <label for="ca-pwd">비밀번호</label>
+                        <input type="password" id="ca-pwd" />
+                    </li>
+                    <li>
+                        <label for="ca-time">카드 기한</label>
+                        <input type="text" id="ca-time" placeholder="MM/YY" />
+                    </li>
+                    <li>
+                        <label for="cvc">CVC 번호</label>
+                        <input type="text" id="cvc" maxlength="3" />
+                    </li>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <legend>뚱띠 조공 리스트</legend>
+                <ul>
+                    <li>
+                        <label for="member1">츄르 개수</label>
+                        <input type="number" id="member1" value="30000" min="20" max="50000" step="1" />
+                    </li>
+                    <li>
+                        <label for="member2">캣닢 개수</label>
+                        <input type="number" id="member2" value="30000" min="20" max="50000" step="1" />
+                    </li>
+                    <li>
+                        <label for="satis">뚱띠 사랑도</label>
+                        <input type="range" id="satis" value="3" min="1" max="3" style="width: 150px; vertical-align: middle;" />
+                    </li>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <legend>신청과목 (택 1)</legend>
+                <label style="display:block;"><input type="radio" name="subject" value="inoru" />기도하기</label>
+                <label style="display:block;"><input type="radio" name="subject" value="kanasimi" />애원하기</label>
+                <label style="display:block;"><input type="radio" name="subject" value="hikikomori" />칩거하기</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>메일링 주제 (복수 선택 가능)</legend>
+                <label style="display:block;"><input type="checkbox" name="mail-sub" value="pa" />뚱띠가 돌아왔는지..</label>
+                <label style="display:block;"><input type="checkbox" name="mail-sub" value="kep" />뚱띠가 살아있는지..</label>
+                <label style="display:block;"><input type="checkbox" name="mail-sub" value="hap" />뚱띠가 행복한지..</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>뚱띠 팬미팅 일정</legend>
+                <ul>
+                    <li>
+                        <label for="start-date">시작일</label>
+                        <input type="date" id="start-date" />
+                    </li>
+                    <li>
+                        <label for="end-date">종료일</label>
+                        <input type="date" id="end-date" />
+                    </li>
+                    <li>
+                        <label for="start-time">시작 시간</label>
+                        <input type="time" value="09:00" id="start-time" />
+                    </li>
+                    <li>
+                        <label for="start-dt">상세 일정</label>
+                        <input type="datetime-local" value="2026-04-02T09:00" id="start-dt" />
+                    </li>
+                </ul>
+            </fieldset>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <input type="submit" value="제출하기" />
+                <input type="reset" value="다시 입력" />
+            </div>
+        </form>
+
+        <div class="section-title">김영민의 미학 특강 신청</div>
+        <form>
+            <fieldset>
+                <legend>수강 신청인</legend>
+                <ul>
+                    <li>
+                        <label for="stu-id">학번</label>
+                        <input type="text" id="stu-id" autofocus />
+                    </li>
+                    <li>
+                        <label for="stu-name">이름</label>
+                        <input type="text" id="stu-name" />
+                    </li>
+                    <li>
+                        <label for="stu-class">학과</label>
+                        <select id="stu-class">
+                            <option value="archi">건축공학과</option>
+                            <option value="mechanic">기계공학과</option>
+                            <option value="indust">산업공학과</option>
+                            <option value="elec">전기전자공학과</option>
+                            <option value="computer">컴퓨터공학과</option>
+                            <option value="chemical">화학공학과</option>
+                        </select>
+                    </li>
+                </ul>
+            </fieldset>
+            <div style="text-align: center;">
+                <input type="submit" value="수강 신청" />
+            </div>
+        </form>
+
+        <div class="back-btn-container">
+            <a href="setup-finish.html" class="back-btn">🏠 메인 홈으로 돌아가기</a>
+        </div>
+
+    </div>
+</body>
+</html>

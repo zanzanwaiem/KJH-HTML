@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘의 수업: 모노노아와레</title>
+  <style>
+      /* ✨ 1. 구글 폰트(노토 산스 KR) 불러오기! (굵기 400, 500, 700 포함) */
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+      /* 전체 배경 및 기본 폰트 설정 */
+      body {
+          /* ✨ 2. 폰트 이름을 'Noto Sans KR'로 변경! */
+          font-family: 'Noto Sans KR', sans-serif;
+          line-height: 1.7;
+          color: #333;
+          background-color: #faf7f4;
+          margin: 0;
+          padding: 40px 20px;
+          word-break: keep-all;
+      }
+
+      /* 콘텐츠를 감싸는 중앙 정렬 박스 */
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          padding: 50px;
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      /* 제목 스타일링 */
+      h1 {
+          color: #705a4e; /* 차분한 따뜻한 회갈색 */
+          font-size: 1.2rem;
+          margin-bottom: 10px;
+      }
+
+      h2 {
+          color: #2c2a2a;
+          font-size: 2rem;
+          margin-top: 0;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #f4d1a0; /* 연한 황갈색 밑줄 */
+      }
+
+      /* 강조 효과 커스텀 (연한 주황색 톤으로 변경) */
+      mark {
+          background-color: #fff3e0; /* 아주 연한 복숭아빛 주황색 배경 */
+          padding: 2px 6px;
+          border-radius: 4px;
+          color: #e65100; /* 깊은 주황색 텍스트 */
+      }
+
+      /* 본문 텍스트 */
+      p {
+          font-size: 1.1rem;
+          margin-bottom: 20px;
+      }
+
+      /* 리스트 및 소제목 스타일링 */
+      .section-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: #4a4143;
+          margin-top: 40px;
+          margin-bottom: 15px;
+      }
+
+      ul, ol {
+          padding-left: 25px;
+          margin-bottom: 30px;
+      }
+
+      li {
+          margin-bottom: 12px;
+          font-size: 1.05rem;
+      }
+
+          li b {
+              color: #4a4143;
+              background-color: #faf0e6; /* 아주 연한 리넨/베이지 배경 */
+              padding: 2px 6px;
+              border-radius: 4px;
+              margin-right: 5px;
+          }
+
+      /* 하이퍼링크 스타일링 (주황색 포인트 컬러 적용) */
+      a {
+          color: #e65100; /* 깊은 주황색 포인트 */
+          text-decoration: none;
+          font-weight: 600;
+          transition: color 0.3s;
+      }
+
+          a:hover {
+              color: #bf360c; /* 마우스 올렸을 때 더 짙은 황갈색 */
+              text-decoration: underline;
+          }
+
+      /* 표(Table) 스타일링 */
+      .table-responsive {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+          width: 100%;
+          min-width: 500px;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+          font-size: 1.05rem;
+      }
+
+      th, td {
+          border: 1px solid #eadbc8; /* 연한 황갈색 테두리 */
+          padding: 15px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #fff3e0; /* 아주 연한 복숭아빛 주황색 헤더 */
+          color: #e65100;
+          font-weight: bold;
+          text-align: center;
+      }
+
+      td:first-child {
+          text-align: center;
+          background-color: #faf5f0; /* 첫 번째 열의 연한 베이지 배경 */
+          font-weight: 600;
+          color: #4a4143;
+      }
+
+      /* 시대 흐름 요약 셀 스타일링 */
+      .flow-row td {
+          text-align: center !important;
+          background-color: #ffe0b2; /* 더 따뜻한 연주황색 요약 배경 */
+          color: #bf360c;
+          font-weight: 700;
+          letter-spacing: 1px;
+      }
+
+      /* 돌아가기 버튼 스타일 (주황색 톤으로 변경 및 이모지 수정) */
+      .back-btn-container {
+          text-align: center;
+          margin-top: 60px;
+          margin-bottom: 10px;
+      }
+
+      .back-btn {
+          display: inline-block;
+          background-color: #fff3e0; /* 아주 연한 복숭아빛 주황색 버튼 */
+          color: #e65100;
+          font-size: 1.1rem;
+          font-weight: 700;
+          padding: 15px 30px;
+          border-radius: 30px; /* 둥근 캡슐 모양 */
+          text-decoration: none;
+          box-shadow: 0 4px 10px rgba(230, 81, 0, 0.1);
+          transition: all 0.3s ease;
+      }
+
+          .back-btn:hover {
+              background-color: #ffe0b2; /* 더 따뜻한 연주황색 호버 */
+              color: #bf360c;
+              text-decoration: none; /* 밑줄 방지 */
+              transform: translateY(-3px); /* 마우스 올리면 위로 살짝 이동 */
+              box-shadow: 0 6px 15px rgba(230, 81, 0, 0.2);
+          }
+
+      /* 구분선 스타일 */
+      hr {
+          border: 0;
+          height: 1px;
+          background-color: #eee;
+          margin: 40px 0;
+      }
+
+      /* 모바일 기기를 위한 반응형 미디어 쿼리 */
+      @media (max-width: 768px) {
+          body {
+              padding: 20px 10px;
+          }
+
+          .container {
+              padding: 30px 20px;
+              border-radius: 12px;
+          }
+
+          h2 {
+              font-size: 1.6rem;
+          }
+
+          p, li {
+              font-size: 1rem;
+          }
+
+          th, td {
+              padding: 10px;
+              font-size: 0.95rem;
+          }
+
+          .back-btn {
+              padding: 12px 24px;
+              font-size: 1rem;
+              width: 100%;
+              box-sizing: border-box; /* 모바일에서는 버튼을 화면 너비에 맞게 */
+          }
+      }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>오늘의 수업은??</h1>
+    <h2>모노노아와레(<ruby>物<rp>(</rp><rt>もの</rt><rp>)</rp></ruby>の<ruby>哀<rp>(</rp><rt>あわ</rt><rp>)</rp></ruby>れ)란?</h2>
+      
+    <p>사물의 덧없음(무상함)에서 느끼는 <b>깊은 감동, 슬픔, 연민</b></p>
+    <p>
+      헤이안 시대부터 일본 문화에 내재된 미의식.<br>
+      벚꽃이 떨어지는 모습처럼 <mark><b>존재의 유한성에서 오는 찡한 서글픔과 그 속의 아름다움을 즐기는 정서적 태도</b></mark>
+    </p>
+      
+    <hr>
+      
+    <ul>
+      <li><b>어원</b> : 사물을 뜻하는 '모노(物)'와 슬픔·감탄을 나타내는 '아와레(あはれ)'의 합성어입니다.</li>
+      <li><b>미학적 배경</b> : 에도 시대 국학자 모토오리 노리나가가 헤이안 시대 문학을 설명하며 정립한 개념입니다.</li>
+      <li><b>내용</b> : 단순히 슬픈 것을 넘어, 모든 것은 변하고 사라진다는 무상(無常)의 이치를 깨닫고 느끼는 복합적인 감정입니다.</li>
+      <li><b>예시</b> : 지는 벚꽃, 가을 단풍, 헤어짐 등 덧없이 사라지는 것들에서 깊은 정취를 느끼는 것.</li>
+    </ul>
+
+    <hr>
+    
+    <div class="section-title">시대 흐름에 따른 의미 변화</div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>시대</th>
+            <th>핵심 특징</th>
+            <th>주요 변화 및 설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>헤이안 시대<br>(8~12세기)</td>
+            <td>개념의 탄생과 궁정 미학</td>
+            <td>귀족들의 연애와 자연의 변화에서 느끼는 우아하고 섬세한 정서였습니다. 슬픔뿐만 아니라 감탄, 애틋함 등 폭넓은 감정을 포괄했습니다.</td>
+          </tr>
+          <tr>
+            <td>중세 (가마쿠라~)<br>(12~16세기)</td>
+            <td>불교적 무상관(無常觀)의 결합</td>
+            <td>전란과 불교의 영향으로 모든 것은 사라진다는 덧없음이 강조되며, 더 깊고 우울한 정조로 변화했습니다. 이후 유겐(幽玄), 와비사비(侘寂)로 이어지는 토대가 됩니다.</td>
+          </tr>
+          <tr>
+            <td>에도 시대<br>(17~19세기)</td>
+            <td>학문적 이론으로 정립</td>
+            <td>국학자 모토오리 노리나가가 과거 문학을 연구하며 '모노노아와레'를 일본 고유의 미학이자 문학적 본질로 공식 정립했습니다.</td>
+          </tr>
+          <tr>
+            <td>근현대<br>(20세기~현재)</td>
+            <td>대중문화 속 감성으로 확장</td>
+            <td>학문적 이론을 넘어 일상적 정서(벚꽃놀이)와 대중 매체(영화, 애니메이션, J-Pop)의 핵심 연출 기법으로 활용되고 있습니다.</td>
+          </tr>
+          <tr class="flow-row">
+            <td colspan="3">귀족 → 종교 → 학문 → 대중</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+            
+    <div class="section-title">표현 방식</div>
+    <ul>
+      <li>
+        <b>계절성과 자연</b>
+        벚꽃, 단풍, 달빛, 눈 등 계절의 변화는 모노노아와레의 핵심 주제입니다. 이는 자연의 순환과 인간 삶의 덧없음을 연결합니다. 예를 들어, 마쿠라노소시에서 세이 쇼나곤은 “가을 저녁의 쓸쓸함이야말로 가장 아와레하다”고 썼습니다.
+      </li>
+      <li>
+        <b>절제된 감정</b>
+        모노노아와레는 과장된 슬픔이나 기쁨이 아니라, 절제된 감정을 중시합니다. 와카의 간결한 5-7-5-7-7 음절 구조는 감정을 함축적으로 전달하며, 이를 통해 깊은 여운을 남깁니다.
+      </li>
+      <li>
+        <b>인간 관계와 이별</b>
+        사랑, 이별, 죽음은 모노노아와레의 주요 소재입니다. 겐지 모노가타리에서 겐지가 연인 무라사키노우에의 죽음을 애도하는 장면은 그녀의 아름다움과 삶의 덧없음을 동시에 드러냅니다.
+      </li>
+      <li>
+        <b>시각적 미학</b>
+        헤이안 미술은 화려하면서도 섬세한 색채와 곡선으로 모노노아와레를 구현했습니다. 옻칠 공예의 마키에(蒔絵) 문양이나 비단 직물의 계절적 색 조합은 덧없는 아름다움을 시각화했습니다.
+      </li>
+    </ul>
+
+    <hr>
+          
+    <div class="section-title">매체에서의 활용</div>
+    <ul>
+      <li><b>소설</b> 헤이안 궁정 문학 <a href="https://ko.wikipedia.org/wiki/겐지_모노가타리" target="_blank">'겐지 모노가타리'</a>, 가와바타 야스나리의 <a href="https://namu.wiki/w/%EC%84%A4%EA%B5%AD" target="_blank">'설국'<a/></li>
+      <li><b>미술</b> <a href="https://m.blog.naver.com/yyyeniii/221477088911" target="_blank">김환기의 물파에 대한 이론</a></li>
+      <li><b>시</b> 일본 메이지 시대의 단시 <a href="https://ko.wikipedia.org/wiki/하이쿠" target="_blank">'하이쿠'</a></li>
+      <li><b>음악</b> 일본 밴드 <a href="https://namu.wiki/w/MONO%20NO%20AWARE" target="_blank">'모노노아와레'</a></li>
+      <li><b>영화</b> 콘 사토시의 <a href="https://ko.wikipedia.org/wiki/천년여우" target="_blank">'천년여우'</a>, 신카이 마코토의 <a href="https://ko.wikipedia.org/wiki/초속_5센티미터" target="_blank">'초속 5센티미터'</a></li>
+    </ul>
+
+    <hr>
+
+    <div class="section-title">우리가 생각해볼 점</div>
+    <ul>
+      <li>
+        <b>우리의 삶에 어떻게 적용할 수 있을까??</b>
+        나의 주변에 존재하는 사물에 선입견을 지운 상태로 지긋이 관찰을 해봅시다. 그 짧은 순간에서도 약간의 변화가 생깁니다. 모든 사물들이 영원하지 않음을 깨닫는다면, 이 사물이 어떠한 시간선을 흘러왔고 그 속에 나 혹은 다른 인물들이 어떠한 감정을 담아왔는지 느끼게 됩니다. 지극히 개인적인 아름다움을 구성하게 됩니다.
+      </li>
+      <li>
+        <b>문제점</b>
+        이러한 완벽해보이는 미학에도 문제점으로 지적받는 부분은 분명히 존재합니다. 누군가에게는 뒤늦게 찾아온 사랑에 대해 아름답게 느껴질 수도 있습니다. 설령 그가 유부남, 유부녀라고 해도 말입니다. 이처럼 모노노아와레는 선과 악의 보편적인 기준이 존재하지 않습니다. 스스로 판단하고, 재단하며 '나'의 파편들을 모아가는 미의식, 미학일 뿐입니다.
+      </li>
+      <li>
+        <b>그렇다면 당신은.</b>
+        인생은 꽤나 귀찮은 일들의 연속입니다. 범세계적인 서사 속에서 정신 바짝차리고 달리며 결과를 내지 못하면 뒤쳐진 듯한 기분이 들기도 합니다. 이 미학은 그러한 큰 서사에서 벗어나 다른 한 가지 소실점을 향해 자신만의 템포로 갈 수 있는 용기를 쥐어줍니다.<br></br>
+        저는 종종 그날 길에서 나는 냄새를 맡고 그 장소를 특이하게 명칭해보고, 좋아하는 길고양이의 그날의 특징을 그림에 담아보기도 하고, 이름 모를 풀꽃에 나만의 꽃말을 심어보며 혼자 낄낄대면서 좋아하는 초딩이 되어봅니다. 조금 많이 길을 돌아가더라도 저는 행복합니다.<br></br>
+        당신은 초조하신가요? 그렇다면 당신이 뭘 좋아하는지 다시 생각해보는 건 어떨까요? 하루만 느긋하고 솔직하게 보내봅시다.
+      </li>
+    </ul>
+
+    <div class="back-btn-container">
+      <a href="setup-finish.html" class="back-btn">🏠 메인 홈으로 돌아가기</a>
+    </div>
+
+  </div>
+</body>
+</html>
