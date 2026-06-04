@@ -1,182 +1,197 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>수업 메인 홈</title>
-    <style>
-        /* ✨ 1. 구글 폰트(노토 산스 KR) 불러오기! (굵기 400, 500, 700 포함) */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-
-        /* 전체 배경 및 기본 폰트 설정 */
-        body {
-            /* ✨ 2. 폰트 이름을 'Noto Sans KR'로 변경! */
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.7;
-            color: #333;
-            background-color: #faf7f4;
-            margin: 0;
-            padding: 40px 20px;
-            word-break: keep-all;
-        }
-
-        /* 콘텐츠를 감싸는 중앙 정렬 박스 */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 50px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        h1 {
-            color: #2c2a2a;
-            font-size: 2.2rem;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: #705a4e;
-            /* 차분한 따뜻한 회갈색 */
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        hr {
-            border: 0;
-            height: 1px;
-            background-color: #eadbc8;
-            /* 연한 황갈색 구분선 */
-            margin: 30px 0;
-        }
-
-        /* 수업 목록 버튼(카드) 스타일 */
-        .lesson-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .lesson-card {
-            display: block;
-            padding: 25px;
-            background-color: #ffffff;
-            border: 2px solid #fff3e0;
-            /* 아주 연한 복숭아빛 주황색 테두리 */
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .lesson-card:hover {
-            background-color: #fffaf5;
-            /* 마우스 올렸을 때 따뜻한 배경색 */
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(230, 81, 0, 0.1);
-            /* 연한 주황빛 그림자 */
-            border-color: #ffe0b2;
-            /* 더 따뜻한 주황색 테두리 */
-        }
-
-        .lesson-date {
-            font-weight: bold;
-            color: #e65100;
-            /* 깊고 진한 주황색 포인트 */
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-
-        .lesson-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #4a4143;
-            margin: 0;
-        }
-
-        /* 아직 안 열린 수업(잠금) 스타일 */
-        .locked-card {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .locked-card:hover {
-            transform: none;
-            box-shadow: none;
-            background-color: #ffffff;
-            border-color: #fff3e0;
-        }
-
-        /* 모바일 최적화 */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 10px;
-            }
-
-            .container {
-                padding: 30px 20px;
-                border-radius: 12px;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .lesson-card {
-                padding: 20px;
-            }
-
-            .lesson-title {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
+    <title>NUDAENG | Official Profile</title>
+    
+    <!-- Fonts: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- AOS Animation Library for startup vibe -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container">
-        <h1>💩 김영민의 일지 ☠️</h1>
-        <p>안녕하쇼. 김영민임다.</p>
 
-        <hr>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">NUDAENG.</div>
+        <ul class="nav-links">
+            <li><a href="#profile">Profile</a></li>
+            <li><a href="#story">Story</a></li>
+            <li><a href="#telepathy">Telepathy</a></li>
+            <li><a href="#family">Family & Friends</a></li>
+        </ul>
+    </nav>
 
-        <div class="lesson-list">
-            <a href="lesson-0323.html" class="lesson-card">
-                <div class="lesson-date">3월 23일</div>
-                <h2 class="lesson-title">모노노아와레(物の哀れ)란?</h2>
-            </a>
-
-            <a href="lesson-0401.html" class="lesson-card">
-                <div class="lesson-date">4월 1일</div>
-                <h2 class="lesson-title">나는 고양이로소이다</h2>
-            </a>
-
-            <a href="lesson-0406.html" class="lesson-card">
-                <div class="lesson-date">4월 6일</div>
-                <h2 class="lesson-title">철학자 안녕하세요</h2>
-            </a>
-
-            <a href="lesson-0413.html" class="lesson-card">
-                <div class="lesson-date">4월 13일</div>
-                <h2 class="lesson-title">ㅇㅇㅇㅇ</h2>
-            </a>
-            <a href="lesson-0427.html" class="lesson-card">
-                <div class="lesson-date">4월 27일</div>
-                <h2 class="lesson-title">상상력의 힘</h2>
-            </a>
-            <a href="lesson-0511.html" class="lesson-card">
-                <div class="lesson-date">5월 11일</div>
-                <h2 class="lesson-title">p5.js 코드 이식</h2>
-            </a>
-            <a href="lesson-0518.html" class="lesson-card">
-                <div class="lesson-date">5월 18일</div>
-                <h2 class="lesson-title">으흐흐흐</h2>
-            </a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <div class="badge">Meet the New Member</div>
+            <h1>안녕하세유, 누댕이에유.</h1>
+            <p>지훈님의 방에서 세상을 관찰하는 거지 출신의 천진난만한 강아지.<br>누댕이의 일상과 가족들을 소개합니다.</p>
+            <a href="#profile" class="cta-button">프로필 보기 ↓</a>
         </div>
+        <div class="hero-visual" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
+            <div class="dog-avatar">🐶</div>
+        </div>
+    </section>
 
-    </div>
+    <!-- Profile Section -->
+    <section class="profile-section" id="profile">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Personal Identity</h2>
+            <div class="profile-grid">
+                <div class="profile-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>기본 정보</h3>
+                    <ul>
+                        <li><strong>이름:</strong> 누댕이 (Nudaeng)</li>
+                        <li><strong>성별:</strong> 남 (Male)</li>
+                        <li><strong>나이:</strong> 3개월</li>
+                        <li><strong>생년월일:</strong> 불명</li>
+                        <li><strong>신체:</strong> 키 12cm / 몸무게 25g</li>
+                        <li><strong>MBTI:</strong> ESFP</li>
+                    </ul>
+                </div>
+                <div class="profile-card highlight" data-aos="fade-up" data-aos-delay="200">
+                    <h3>아이덴티티</h3>
+                    <ul>
+                        <li><strong>퍼스널컬러:</strong> 가을웜톤 🍂</li>
+                        <li><strong>전재산:</strong> 1센트 🪙</li>
+                        <li><strong>취미:</strong> 여행, 노래, 춤추기, 수다떨기, 본인 사진찍기</li>
+                        <li><strong>말투:</strong> 3인칭 사용, 모든 사람에게 '~님' 호칭, 종결어미 '~유'</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section" id="story">
+        <div class="container">
+            <div class="story-content" data-aos="fade-right">
+                <h2 class="section-title">Background Story</h2>
+                <p class="lead-text">"길바닥에서 지훈님의 침대 위로."</p>
+                <p>누댕이는 원래 거지 출신의 강아지였습니다. 길에서 굴러다니던 누댕이를 지훈님이 발견하여 집으로 데려와 거둬주었지유. 지금은 지훈님의 침대 위에서 지내며 안락한 삶을 누리고 있습니다.</p>
+                <p>누댕이가 주로 하는 일은 침대 위 다른 인형들과 대화하기, 이부자리 정리하기(한세월 걸려서 성과는 없음) 등이 있습니다. 천진난만하고 약간은 눈치가 없지만, 모든 사람에게 기본적으로 친절한 성격을 가지고 있답니다.</p>
+                <div class="language-skill">
+                    <strong>사용 언어:</strong> 한국어 (기본) / 영어 (아주 조금) / 일본어 (못함)<br>
+                    <small>※ 미국 방문 후 이모님이 "Nudaeng. You English speaking dog~" 라며 영어를 쓰시지만, 영어를 다 까먹어서 "이잉..." 하며 피합니다.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Telepathy Section -->
+    <section class="telepathy-section" id="telepathy">
+        <div class="container text-center">
+            <h2 class="section-title" data-aos="fade-up">Telepathy System</h2>
+            <p data-aos="fade-up" data-aos-delay="100">누댕이와 지훈님은 멀리 떨어져 있어도 서로 텔레파시를 사용해 생각 공유가 가능합니다.</p>
+            
+            <div class="step-container">
+                <div class="step-box" data-aos="flip-left" data-aos-delay="200">
+                    <div class="step-num">1</div>
+                    <p>양손의 검지와 중지를 펴서 붙이고, 나머지 손은 주먹을 쥡니다.</p>
+                </div>
+                <div class="step-box" data-aos="flip-left" data-aos-delay="300">
+                    <div class="step-num">2</div>
+                    <p>텔레파시가 시작되면 입에서 '찌지직... 찌지지직' 소리가 납니다.</p>
+                </div>
+                <div class="step-box" data-aos="flip-left" data-aos-delay="400">
+                    <div class="step-num">3</div>
+                    <p>실시간으로 생각을 공유하고 육체로 자신의 말을 전합니다.</p>
+                </div>
+            </div>
+            <p class="note" data-aos="fade-up" data-aos-delay="500">
+                ⚠️ 주의사항: 엄마님같이 누댕이를 좋아하지 않는 사람들에게는 대화 소리가 <strong>"누댕누댕..."</strong>으로 자체 모자이크 되어 들립니다. 근거리에서는 텔레파시가 필요 없습니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Family & Friends Section -->
+    <section class="family-section" id="family">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Network</h2>
+            
+            <h3 class="sub-title" data-aos="fade-up">가족 관계 (Family)</h3>
+            <div class="grid-3">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <h4>1. 누댕이 (첫째)</h4>
+                    <p>이 글의 주인공. 애교가 많은 성격이지만 꽤나 카리스마 넘치는 첫째입니다.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <h4>2. 뉴댕이 (둘째)</h4>
+                    <p>마음이 제일 약한 평화주의자. 누댕이와 삼댕이가 싸우면 중재하는 착한 동생. 이모님 모니터 한켠 거주 중.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <h4>3. 삼댕이 (셋째)</h4>
+                    <p>가장 뚱뚱하고 농구를 잘하게 생긴 장난꾸러기. 곧 미국으로 갈 예정입니다.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <h4>4. 누상이 (사촌)</h4>
+                    <p>이모님 친구 지윤님께서 아들 분 이름 '상'을 따서 지어주신 사촌입니다.</p>
+                </div>
+            </div>
+
+            <h3 class="sub-title mt-50" data-aos="fade-up">인간 친구 호감도 랭킹 (Friends Rank)</h3>
+            <div class="ranking-list">
+                <div class="rank-item tier-0" data-aos="fade-left" data-aos-delay="100">
+                    <div class="rank">0순위</div>
+                    <div class="desc">
+                        <strong>지훈님</strong><br>거지인 누댕이를 거둬주고 씻기고 먹이고 재워준 구세주. 뗄 수 없는 넘사벽 사이.
+                    </div>
+                </div>
+                <div class="rank-item" data-aos="fade-left" data-aos-delay="200">
+                    <div class="rank">2위</div>
+                    <div class="desc">
+                        <strong>이모님</strong><br>미국 거처 제공자. 누댕력 사상 최고의 전도자. 주변 고학력자 및 외삼촌에게 누댕이를 널리 알림. (방귀 덮어씌우기는 덤)
+                    </div>
+                </div>
+                <div class="rank-item" data-aos="fade-left" data-aos-delay="300">
+                    <div class="rank">공동 2위</div>
+                    <div class="desc">
+                        <strong>할머니님</strong><br>"얘는 표정이 살아있다" 등 기분 좋은 명언을 남겨주신 분.
+                    </div>
+                </div>
+                <div class="rank-item" data-aos="fade-left" data-aos-delay="400">
+                    <div class="rank">공동 2위</div>
+                    <div class="desc">
+                        <strong>영민님</strong><br>말로는 쫓아내려 하지만 누구보다 잘 놀아주는 츤데레 삼촌 같은 존재.
+                    </div>
+                </div>
+                <div class="rank-item" data-aos="fade-left" data-aos-delay="500">
+                    <div class="rank">공동 2위</div>
+                    <div class="desc">
+                        <strong>경란님</strong><br>스웨덴 친구 '애기'를 소개시켜 주시고, 영통할 때마다 다정하게 인사해 주시는 분.
+                    </div>
+                </div>
+                <div class="rank-item tier-bottom" data-aos="fade-left" data-aos-delay="600">
+                    <div class="rank">999위</div>
+                    <div class="desc">
+                        <strong>엄마님</strong><br>누댕이에게 관심이 없고 탐탁지 않아 하심. 이름도 '누뎅이', '댕댕이'로 부르심. 누댕이는 친해지고 싶어 하지만 언제나 무시당함.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <h2>"누댕이는 언제나 여러분을 사랑해유!"</h2>
+            <p>© 2026 NUDAENG PROFILE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts for animations -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 50,
+        });
+    </script>
 </body>
-
 </html>
