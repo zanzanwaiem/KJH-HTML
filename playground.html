@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUDAENG | jQuery Playground</title>
+    
+    <!-- Fonts: Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo"><a href="index.html" style="color: inherit; text-decoration: none;">NUDAENG.</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="subscribe.html">Subscribe</a></li>
+            <li><a href="#" class="active" style="color: var(--accent-orange); font-weight: 700;">Playground</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="sub-header">
+        <div class="container text-center">
+            <h1 data-aos="fade-up">jQuery 인터랙티브 놀이터 🎡</h1>
+            <p data-aos="fade-up" data-aos-delay="100">제이쿼리의 핵심 4대 기능(DOM, CSS, Event, Animation)을 활용해 누댕이와 놀아보세요!</p>
+        </div>
+    </section>
+
+    <!-- Playground Section -->
+    <section class="playground-section">
+        <div class="container">
+            <div class="grid-2">
+                
+                <!-- 1. DOM 조작 -->
+                <div class="play-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="badge">1. DOM 조작 (HTML)</div>
+                    <h2>누댕이 간식 주기 🍖</h2>
+                    <p>제이쿼리의 <code>.append()</code> 기능을 사용하여 HTML 요소를 실시간으로 추가합니다.</p>
+                    <button class="cta-button" id="btn-feed">간식 투척!</button>
+                    <button class="cta-button outline" id="btn-clear-feed">그릇 비우기</button>
+                    
+                    <div class="snack-bowl mt-20">
+                        <ul id="snack-list">
+                            <li>빈 밥그릇입니다... 배고파유 🐶</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. CSS 조작 -->
+                <div class="play-card" id="theme-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="badge">2. CSS 조작</div>
+                    <h2>다크모드 변환 🌙</h2>
+                    <p>제이쿼리의 <code>.toggleClass()</code> 기능을 사용하여 CSS 스타일을 즉각적으로 반전시킵니다.</p>
+                    <button class="cta-button" id="btn-theme">다크모드 켜기/끄기</button>
+                    
+                    <div class="theme-preview mt-20">
+                        <h3 id="theme-text">현재는 눈이 편안한 밝은 모드입니다.</h3>
+                    </div>
+                </div>
+
+                <!-- 3. HTML 이벤트 -->
+                <div class="play-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="badge">3. HTML 이벤트</div>
+                    <h2>누댕이 쓰다듬기 🖐️</h2>
+                    <p><code>.mouseenter()</code>와 <code>.mouseleave()</code> 마우스 이벤트를 감지하여 반응합니다.</p>
+                    
+                    <div class="petting-zone mt-20" id="petting-zone">
+                        마우스를 이 박스 안으로 올려보세요!
+                    </div>
+                </div>
+
+                <!-- 4. 효과 및 애니메이션 -->
+                <div class="play-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="badge">4. 효과(Effect) & 애니메이션</div>
+                    <h2>누댕이 숨바꼭질 🙈</h2>
+                    <p><code>.slideUp()</code>, <code>.slideDown()</code>, <code>.fadeOut()</code> 효과를 사용합니다.</p>
+                    
+                    <div class="action-buttons">
+                        <button class="cta-button" id="btn-hide">숨기 (Slide Up)</button>
+                        <button class="cta-button outline" id="btn-show">나타나기 (Slide Down)</button>
+                        <button class="cta-button" style="background:#E74C3C;" id="btn-fade">마술 (Fade Toggle)</button>
+                    </div>
+
+                    <div class="hide-seek-box mt-20" id="nudaeng-box">
+                        🐶 짜잔! 누댕이가 여기 있어유!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2026 NUDAENG. Powered by jQuery.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* =========================================
+           jQuery Scripts
+           ========================================= */
+        $(document).ready(function() {
+            
+            // 1. DOM 조작 (HTML 추가/삭제)
+            let snackCount = 0;
+            $("#btn-feed").click(function() {
+                if(snackCount === 0) {
+                    $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
+                }
+                const snacks = ['🦴 개껌', '🥩 고기반찬', '🍠 고구마', '🍎 사과'];
+                const randomSnack = snacks[Math.floor(Math.random() * snacks.length)];
+                
+                // append()로 리스트 맨 끝에 추가
+                $("#snack-list").append("<li>" + randomSnack + "이(가) 투척되었습니다! 왈왈!</li>");
+                snackCount++;
+            });
+
+            $("#btn-clear-feed").click(function() {
+                // empty()로 내부 요소 모두 삭제 후 초기화
+                $("#snack-list").empty().append("<li>빈 밥그릇입니다... 배고파유 🐶</li>");
+                snackCount = 0;
+            });
+
+            // 2. CSS 조작
+            $("#btn-theme").click(function() {
+                // toggleClass()를 이용해 클래스를 넣었다 뺐다 함
+                $("#theme-card").toggleClass("dark-mode");
+                
+                // css()와 text()를 이용한 직접 제어
+                if ($("#theme-card").hasClass("dark-mode")) {
+                    $("#theme-text").text("어두운 다크모드로 변환되었습니다! 🦇");
+                    $("#theme-text").css("color", "#F2A65A");
+                } else {
+                    $("#theme-text").text("현재는 눈이 편안한 밝은 모드입니다.");
+                    $("#theme-text").css("color", "inherit");
+                }
+            });
+
+            // 3. HTML 이벤트 처리
+            $("#petting-zone").mouseenter(function() {
+                // 마우스가 올라갔을 때
+                $(this).text("아유 시원해유~ 꼬리 붕붕붕 🐕💨");
+                $(this).css({
+                    "background-color": "#D97736",
+                    "color": "white",
+                    "transform": "scale(1.05)",
+                    "transition": "all 0.3s"
+                });
+            });
+
+            $("#petting-zone").mouseleave(function() {
+                // 마우스가 나갔을 때
+                $(this).text("어디가유? 더 쓰다듬어 주세유... 🥺");
+                $(this).css({
+                    "background-color": "#FFF5EC",
+                    "color": "#D97736",
+                    "transform": "scale(1)"
+                });
+            });
+
+            // 4. 효과 및 애니메이션 (Effect)
+            $("#btn-hide").click(function() {
+                // 위로 스르륵 사라짐
+                $("#nudaeng-box").slideUp(500); 
+            });
+
+            $("#btn-show").click(function() {
+                // 아래로 스르륵 나타남
+                $("#nudaeng-box").slideDown(500);
+            });
+
+            $("#btn-fade").click(function() {
+                // 서서히 사라졌다 나타났다 토글
+                $("#nudaeng-box").fadeToggle(800);
+            });
+
+        });
+    </script>
+</body>
+</html>

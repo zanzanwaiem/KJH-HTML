@@ -683,3 +683,114 @@ input:checked + .slider:before { transform: translateX(26px); }
     animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+/* =========================================
+   Playground Page Styles 
+   ========================================= */
+
+.playground-section {
+    background: #FDFCF9;
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+}
+.play-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+.play-card h2 {
+    margin: 15px 0;
+    font-size: 1.8rem;
+    color: var(--accent-orange);
+}
+.play-card p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+.play-card code {
+    background: #F8F9FA;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #E74C3C;
+    font-family: monospace;
+}
+.snack-bowl {
+    background: #FFF5EC;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px dashed var(--accent-orange);
+    min-height: 100px;
+}
+#snack-list {
+    list-style: none;
+    margin: 0; padding: 0;
+}
+#snack-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(217, 119, 54, 0.2);
+    animation: slideIn 0.3s ease-out;
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Dark Mode (jQuery Toggle) */
+.dark-mode {
+    background: #2C2A29 !important;
+    color: white !important;
+    border-color: #444 !important;
+}
+.dark-mode p { color: #aaa !important; }
+.dark-mode code { background: #444 !important; color: #F2A65A !important; }
+.theme-preview {
+    padding: 30px;
+    border-radius: 12px;
+    background: #F8F9FA;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+.dark-mode .theme-preview {
+    background: #1A1918;
+    border-color: #333;
+}
+
+/* Petting Zone */
+.petting-zone {
+    height: 150px;
+    background: #FFF5EC;
+    border: 2px solid var(--accent-orange);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-orange);
+    cursor: crosshair;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.hide-seek-box {
+    background: linear-gradient(45deg, var(--accent-orange), var(--accent-light));
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 16px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 10px 20px rgba(217, 119, 54, 0.3);
+}
+.mt-20 { margin-top: 20px; }
