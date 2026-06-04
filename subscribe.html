@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUDAENG | Subscribe</title>
+    
+    <!-- Fonts: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo"><a href="index.html" style="color: inherit; text-decoration: none;">NUDAENG.</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" class="active">Subscribe</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="sub-header">
+        <div class="container text-center">
+            <h1 data-aos="fade-up">누댕이 한정판 사진집 구독 📸</h1>
+            <p data-aos="fade-up" data-aos-delay="100">거지 시절부터 침대 위 꿀잠 라이프까지. 누댕이의 은밀한 일상을 매월 배달해 드립니다.</p>
+        </div>
+    </section>
+
+    <!-- Carousel Section (JS) -->
+    <section class="carousel-section">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Sneak Peek</h2>
+            <div class="carousel-container" data-aos="fade-up" data-aos-delay="100">
+                <button class="carousel-btn prev-btn" id="prevBtn">❮</button>
+                <div class="carousel-track-container">
+                    <ul class="carousel-track" id="track">
+                        <li class="carousel-slide current-slide">
+                            <div class="placeholder-img" style="background: var(--primary-color);">
+                                <h3>사진 1</h3><p>침대 점령 중인 누댕이</p>
+                            </div>
+                        </li>
+                        <li class="carousel-slide">
+                            <div class="placeholder-img" style="background: var(--border-color);">
+                                <h3>사진 2</h3><p>인형들과 수다떨기</p>
+                            </div>
+                        </li>
+                        <li class="carousel-slide">
+                            <div class="placeholder-img" style="background: #e2c2a4;">
+                                <h3>사진 3</h3><p>이부자리 정리 실패 현장</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <button class="carousel-btn next-btn" id="nextBtn">❯</button>
+            </div>
+            <div class="carousel-nav" id="carouselNav">
+                <button class="carousel-indicator current-slide"></button>
+                <button class="carousel-indicator"></button>
+                <button class="carousel-indicator"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (JS Toggle) -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-header text-center" data-aos="fade-up">
+                <h2 class="section-title">Membership Plans</h2>
+                <div class="toggle-container">
+                    <span>월간 결제</span>
+                    <label class="switch">
+                        <input type="checkbox" id="billingToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>연간 결제 <span class="discount-badge">20% OFF</span></span>
+                </div>
+            </div>
+
+            <div class="grid-3 pricing-grid">
+                <!-- Basic -->
+                <div class="card pricing-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Basic</h3>
+                    <div class="price">
+                        <span class="currency">¢</span><span class="amount" data-monthly="1" data-yearly="9">1</span>
+                        <span class="period">/월</span>
+                    </div>
+                    <ul class="features">
+                        <li>월 1장 고화질 사진 전송</li>
+                        <li>생일 축하 메시지</li>
+                        <li class="disabled">텔레파시 우선 연결권</li>
+                        <li class="disabled">엄마님 접근 금지 특권</li>
+                    </ul>
+                    <button class="cta-button outline select-plan" data-plan="Basic">선택하기</button>
+                </div>
+                
+                <!-- Premium -->
+                <div class="card pricing-card highlight-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="best-badge">BEST</div>
+                    <h3>Premium</h3>
+                    <div class="price">
+                        <span class="currency">¢</span><span class="amount" data-monthly="5" data-yearly="48">5</span>
+                        <span class="period">/월</span>
+                    </div>
+                    <ul class="features">
+                        <li>월 10장 고화질 사진 전송</li>
+                        <li>생일 축하 텔레파시</li>
+                        <li>텔레파시 우선 연결권</li>
+                        <li class="disabled">엄마님 접근 금지 특권</li>
+                    </ul>
+                    <button class="cta-button select-plan" data-plan="Premium">선택하기</button>
+                </div>
+
+                <!-- VIP -->
+                <div class="card pricing-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3>VIP</h3>
+                    <div class="price">
+                        <span class="currency">¢</span><span class="amount" data-monthly="10" data-yearly="96">10</span>
+                        <span class="period">/월</span>
+                    </div>
+                    <ul class="features">
+                        <li>무제한 사진 열람</li>
+                        <li>24시간 텔레파시 핫라인</li>
+                        <li>텔레파시 VVIP 라운지</li>
+                        <li><strong>엄마님 접근 완전 차단!</strong></li>
+                    </ul>
+                    <button class="cta-button outline select-plan" data-plan="VIP">선택하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Form (JS Validation) -->
+    <section class="checkout-section">
+        <div class="container form-container" data-aos="fade-up">
+            <h2 class="section-title text-center">결제 정보 입력</h2>
+            <form id="subscribeForm">
+                <div class="form-group">
+                    <label for="planSelection">선택한 요금제</label>
+                    <input type="text" id="planSelection" value="Premium (월간)" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="userName">이름 (필수)</label>
+                    <input type="text" id="userName" placeholder="예: 영민님">
+                    <span class="error-msg" id="nameError">이름을 입력해주세요.</span>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">이메일 (필수)</label>
+                    <input type="email" id="userEmail" placeholder="nudaeng@example.com">
+                    <span class="error-msg" id="emailError">유효한 이메일 주소를 입력해주세요.</span>
+                </div>
+                <button type="submit" class="cta-button full-width">구독 시작하기 (텔레파시 송신)</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2026 NUDAENG. All Rights Reserved. (전재산: 1센트)</p>
+        </div>
+    </footer>
+
+    <!-- Payment Modal (JS Animation) -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content">
+            <div id="loadingState">
+                <div class="spinner"></div>
+                <h2 class="telepathy-blink">텔레파시 연결 중...</h2>
+                <p>누댕이의 두뇌 서버로 정보를 전송하고 있습니다.</p>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+            <div id="successState" style="display: none;">
+                <div class="success-icon">🎉</div>
+                <h2>구독이 완료되었어유!</h2>
+                <p><span id="displayUserName"></span>님, 이제 누댕이의 VIP 가족입니다.<br>매월 멋진 사진들을 보내드릴게유!</p>
+                <button class="cta-button" id="closeModalBtn" onclick="window.location.href='index.html'">메인으로 돌아가기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* 1. Billing Toggle Logic */
+        const billingToggle = document.getElementById('billingToggle');
+        const priceElements = document.querySelectorAll('.amount');
+        const periodElements = document.querySelectorAll('.period');
+        const planInput = document.getElementById('planSelection');
+        let currentPlanName = "Premium";
+        let isYearly = false;
+
+        billingToggle.addEventListener('change', (e) => {
+            isYearly = e.target.checked;
+            priceElements.forEach(el => {
+                // simple fade animation
+                el.style.opacity = 0;
+                setTimeout(() => {
+                    el.innerText = isYearly ? el.getAttribute('data-yearly') : el.getAttribute('data-monthly');
+                    el.style.opacity = 1;
+                }, 200);
+            });
+            periodElements.forEach(el => {
+                el.style.opacity = 0;
+                setTimeout(() => {
+                    el.innerText = isYearly ? '/년' : '/월';
+                    el.style.opacity = 1;
+                }, 200);
+            });
+            updatePlanInput();
+        });
+
+        /* 2. Plan Selection Logic */
+        const planButtons = document.querySelectorAll('.select-plan');
+        planButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // remove highlight from all
+                document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('highlight-card'));
+                // add highlight to selected
+                e.target.closest('.pricing-card').classList.add('highlight-card');
+                currentPlanName = e.target.getAttribute('data-plan');
+                updatePlanInput();
+                // scroll to form
+                document.getElementById('subscribeForm').scrollIntoView({behavior: 'smooth'});
+            });
+        });
+
+        function updatePlanInput() {
+            planInput.value = `${currentPlanName} (${isYearly ? '연간' : '월간'})`;
+        }
+
+        /* 3. Form Validation & Modal Logic */
+        const form = document.getElementById('subscribeForm');
+        const nameInput = document.getElementById('userName');
+        const emailInput = document.getElementById('userEmail');
+        const nameError = document.getElementById('nameError');
+        const emailError = document.getElementById('emailError');
+        
+        const modal = document.getElementById('paymentModal');
+        const loadingState = document.getElementById('loadingState');
+        const successState = document.getElementById('successState');
+        const progressFill = document.getElementById('progressFill');
+        const displayUserName = document.getElementById('displayUserName');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            if (nameInput.value.trim() === '') {
+                nameError.style.display = 'block';
+                nameInput.classList.add('invalid');
+                isValid = false;
+            } else {
+                nameError.style.display = 'none';
+                nameInput.classList.remove('invalid');
+            }
+
+            // Email validation (simple regex)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                emailInput.classList.add('invalid');
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
+                emailInput.classList.remove('invalid');
+            }
+
+            if (isValid) {
+                // Show modal & start fake loading
+                displayUserName.innerText = nameInput.value;
+                modal.style.display = 'flex';
+                loadingState.style.display = 'block';
+                successState.style.display = 'none';
+                progressFill.style.width = '0%';
+                
+                // Animate progress bar
+                setTimeout(() => progressFill.style.width = '40%', 500);
+                setTimeout(() => progressFill.style.width = '80%', 1500);
+                setTimeout(() => {
+                    progressFill.style.width = '100%';
+                    setTimeout(() => {
+                        loadingState.style.display = 'none';
+                        successState.style.display = 'block';
+                        // Simple confetti effect could be added here
+                    }, 500);
+                }, 2500);
+            }
+        });
+
+        /* 4. Carousel Logic */
+        const track = document.getElementById('track');
+        const slides = Array.from(track.children);
+        const nextButton = document.getElementById('nextBtn');
+        const prevButton = document.getElementById('prevBtn');
+        const dotsNav = document.getElementById('carouselNav');
+        const dots = Array.from(dotsNav.children);
+
+        const slideWidth = slides[0].getBoundingClientRect().width;
+
+        const setSlidePosition = (slide, index) => {
+            slide.style.left = slideWidth * index + 'px';
+        };
+        slides.forEach(setSlidePosition);
+
+        const moveToSlide = (track, currentSlide, targetSlide) => {
+            track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+            currentSlide.classList.remove('current-slide');
+            targetSlide.classList.add('current-slide');
+        };
+
+        const updateDots = (currentDot, targetDot) => {
+            currentDot.classList.remove('current-slide');
+            targetDot.classList.add('current-slide');
+        }
+
+        prevButton.addEventListener('click', e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const prevSlide = currentSlide.previousElementSibling;
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const prevDot = currentDot.previousElementSibling;
+            
+            if(!prevSlide) return;
+            moveToSlide(track, currentSlide, prevSlide);
+            updateDots(currentDot, prevDot);
+        });
+
+        nextButton.addEventListener('click', e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const nextSlide = currentSlide.nextElementSibling;
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const nextDot = currentDot.nextElementSibling;
+
+            if(!nextSlide) return;
+            moveToSlide(track, currentSlide, nextSlide);
+            updateDots(currentDot, nextDot);
+        });
+
+        dotsNav.addEventListener('click', e => {
+            const targetDot = e.target.closest('button');
+            if(!targetDot) return;
+
+            const currentSlide = track.querySelector('.current-slide');
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const targetIndex = dots.findIndex(dot => dot === targetDot);
+            const targetSlide = slides[targetIndex];
+
+            moveToSlide(track, currentSlide, targetSlide);
+            updateDots(currentDot, targetDot);
+        });
+
+    </script>
+</body>
+</html>
