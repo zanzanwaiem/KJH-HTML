@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NUDAENG | jQuery Playground</title>
+    <title>NUDAENG | Playground</title>
     
     <!-- Fonts: Noto Sans KR -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,8 +31,8 @@
     <!-- Header Section -->
     <section class="sub-header">
         <div class="container text-center">
-            <h1 data-aos="fade-up">jQuery 인터랙티브 놀이터 🎡</h1>
-            <p data-aos="fade-up" data-aos-delay="100">제이쿼리의 핵심 4대 기능(DOM, CSS, Event, Animation)을 활용해 누댕이와 놀아보세요!</p>
+            <h1 data-aos="fade-up">누댕이 인터랙티브 놀이터 🎡</h1>
+            <p data-aos="fade-up" data-aos-delay="100">이곳저곳 마우스로 클릭하고 쓰다듬으며 누댕이와 놀아보세요!</p>
         </div>
     </section>
 
@@ -41,11 +41,10 @@
         <div class="container">
             <div class="grid-2">
                 
-                <!-- 1. DOM 조작 -->
+                <!-- 1. 간식 주기 -->
                 <div class="play-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="badge">1. DOM 조작 (HTML)</div>
-                    <h2>누댕이 간식 주기 🍖</h2>
-                    <p>제이쿼리의 <code>.append()</code> 기능을 사용하여 HTML 요소를 실시간으로 추가합니다.</p>
+                    <h2>누댕이 밥 주기 🍖</h2>
+                    <p>버튼을 눌러 맛있는 음식들을 투척해 보세요!</p>
                     <button class="cta-button" id="btn-feed">간식 투척!</button>
                     <button class="cta-button outline" id="btn-clear-feed">그릇 비우기</button>
                     
@@ -57,39 +56,36 @@
                     </div>
                 </div>
 
-                <!-- 2. CSS 조작 -->
+                <!-- 2. 다크모드 -->
                 <div class="play-card" id="theme-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="badge">2. CSS 조작</div>
-                    <h2>다크모드 변환 🌙</h2>
-                    <p>제이쿼리의 <code>.toggleClass()</code> 기능을 사용하여 CSS 스타일을 즉각적으로 반전시킵니다.</p>
-                    <button class="cta-button" id="btn-theme">다크모드 켜기/끄기</button>
+                    <h2>불 끄기 🌙</h2>
+                    <p>누댕이가 잘 수 있게 방 안의 불을 꺼주세요.</p>
+                    <button class="cta-button" id="btn-theme">불 끄기/켜기</button>
                     
                     <div class="theme-preview mt-20">
-                        <h3 id="theme-text">현재는 눈이 편안한 밝은 모드입니다.</h3>
+                        <h3 id="theme-text">현재는 환하게 불이 켜져 있습니다.</h3>
                     </div>
                 </div>
 
-                <!-- 3. HTML 이벤트 -->
+                <!-- 3. 쓰다듬기 -->
                 <div class="play-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="badge">3. HTML 이벤트</div>
                     <h2>누댕이 쓰다듬기 🖐️</h2>
-                    <p><code>.mouseenter()</code>와 <code>.mouseleave()</code> 마우스 이벤트를 감지하여 반응합니다.</p>
+                    <p>마우스를 박스 위로 올려 부드럽게 쓰다듬어 주세요.</p>
                     
                     <div class="petting-zone mt-20" id="petting-zone">
                         마우스를 이 박스 안으로 올려보세요!
                     </div>
                 </div>
 
-                <!-- 4. 효과 및 애니메이션 -->
+                <!-- 4. 숨바꼭질 -->
                 <div class="play-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="badge">4. 효과(Effect) & 애니메이션</div>
                     <h2>누댕이 숨바꼭질 🙈</h2>
-                    <p><code>.slideUp()</code>, <code>.slideDown()</code>, <code>.fadeOut()</code> 효과를 사용합니다.</p>
+                    <p>버튼을 눌러 누댕이와 재미있는 숨바꼭질을 해보세요.</p>
                     
                     <div class="action-buttons">
-                        <button class="cta-button" id="btn-hide">숨기 (Slide Up)</button>
-                        <button class="cta-button outline" id="btn-show">나타나기 (Slide Down)</button>
-                        <button class="cta-button" style="background:#E74C3C;" id="btn-fade">마술 (Fade Toggle)</button>
+                        <button class="cta-button" id="btn-hide">숨기기</button>
+                        <button class="cta-button outline" id="btn-show">찾기</button>
+                        <button class="cta-button" style="background:#E74C3C;" id="btn-fade">마술 부리기</button>
                     </div>
 
                     <div class="hide-seek-box mt-20" id="nudaeng-box">
@@ -104,7 +100,7 @@
     <!-- Footer -->
     <footer>
         <div class="container text-center">
-            <p>&copy; 2026 NUDAENG. Powered by jQuery.</p>
+            <p>&copy; 2026 NUDAENG.</p>
         </div>
     </footer>
 
@@ -162,10 +158,10 @@
                 
                 // css()와 text()를 이용한 직접 제어
                 if ($("#theme-card").hasClass("dark-mode")) {
-                    $("#theme-text").text("어두운 다크모드로 변환되었습니다! 🦇");
+                    $("#theme-text").text("불이 꺼졌습니다! 코오 자는 중... 💤");
                     $("#theme-text").css("color", "#F2A65A");
                 } else {
-                    $("#theme-text").text("현재는 눈이 편안한 밝은 모드입니다.");
+                    $("#theme-text").text("현재는 환하게 불이 켜져 있습니다.");
                     $("#theme-text").css("color", "inherit");
                 }
             });
