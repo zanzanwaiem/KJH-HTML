@@ -106,7 +106,8 @@ section {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -154,14 +155,32 @@ section {
 .hero-visual {
     width: 400px;
     height: 400px;
-    background: #fff;
+    background: radial-gradient(circle, #ffffff 0%, #FFF5EC 100%);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-color);
-    overflow: hidden; /* To ensure the model-viewer stays within the circle */
+    box-shadow: 0 0 0 10px rgba(255,255,255,0.6),
+                0 30px 60px rgba(217, 119, 54, 0.2),
+                0 0 40px rgba(217, 119, 54, 0.4);
+    border: 2px solid var(--accent-orange);
+    overflow: hidden; 
+    animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { 
+        transform: translateY(0px); 
+        box-shadow: 0 0 0 10px rgba(255,255,255,0.6), 0 30px 60px rgba(217, 119, 54, 0.2), 0 0 40px rgba(217, 119, 54, 0.3); 
+    }
+    50% { 
+        transform: translateY(-20px); 
+        box-shadow: 0 0 0 15px rgba(255,255,255,0.8), 0 50px 80px rgba(217, 119, 54, 0.15), 0 0 60px rgba(217, 119, 54, 0.6); 
+    }
+    100% { 
+        transform: translateY(0px); 
+        box-shadow: 0 0 0 10px rgba(255,255,255,0.6), 0 30px 60px rgba(217, 119, 54, 0.2), 0 0 40px rgba(217, 119, 54, 0.3); 
+    }
 }
 model-viewer {
     width: 100%;
