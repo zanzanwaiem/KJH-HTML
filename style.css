@@ -396,10 +396,11 @@ footer h2 {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    height: 400px;
+    height: 600px; /* 늘어난 사진들을 위해 600px로 확장 */
     overflow: hidden;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    background-color: #F8F9FA; /* 빈 공간이 생길 경우를 위한 배경색 */
 }
 .carousel-track-container {
     height: 100%;
