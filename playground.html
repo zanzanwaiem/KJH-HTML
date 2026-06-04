@@ -49,8 +49,9 @@
                     <button class="cta-button" id="btn-feed">간식 투척!</button>
                     <button class="cta-button outline" id="btn-clear-feed">그릇 비우기</button>
                     
-                    <div class="snack-bowl mt-20">
-                        <ul id="snack-list">
+                    <div class="snack-bowl mt-20" style="text-align: center;">
+                        <img id="reaction-img" src="images/interactive/ing.png" alt="Nudaeng Reaction" style="max-height: 120px; margin-bottom: 15px; border-radius: 10px; object-fit: contain;">
+                        <ul id="snack-list" style="text-align: left;">
                             <li>빈 밥그릇입니다... 배고파유 🐶</li>
                         </ul>
                     </div>
@@ -124,11 +125,14 @@
                     $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
                 }
                 const foodMenu = [
-                    { name: '🧀 나쵸', reaction: '에잇 이게 뭐에윸!!' },
-                    { name: '🍲 갈비탕', reaction: '뭐 이 정도면 괜찮네유.' },
-                    { name: '🍕 피자', reaction: '챱챱챱ㅊ뱌' }
+                    { name: '🧀 나쵸', reaction: '에잇 이게 뭐에윸!!', img: 'images/interactive/bad.png' },
+                    { name: '🍲 갈비탕', reaction: '뭐 이 정도면 괜찮네유.', img: 'images/interactive/good.png' },
+                    { name: '🍕 피자', reaction: '챱챱챱ㅊ뱌', img: 'images/interactive/love.png' }
                 ];
                 const randomFood = foodMenu[Math.floor(Math.random() * foodMenu.length)];
+                
+                // 이미지 변경
+                $("#reaction-img").attr("src", randomFood.img);
                 
                 // append()로 리스트 맨 끝에 추가
                 $("#snack-list").append("<li><strong>" + randomFood.name + "</strong> 투척! ➡️ " + randomFood.reaction + "</li>");
@@ -136,6 +140,8 @@
             });
 
             $("#btn-clear-feed").click(function() {
+                // 이미지 초기화
+                $("#reaction-img").attr("src", "images/interactive/ing.png");
                 // empty()로 내부 요소 모두 삭제 후 초기화
                 $("#snack-list").empty().append("<li>빈 밥그릇입니다... 배고파유 🐶</li>");
                 snackCount = 0;
