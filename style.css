@@ -161,9 +161,13 @@ section {
     align-items: center;
     box-shadow: 0 30px 60px rgba(0,0,0,0.05);
     border: 1px solid var(--border-color);
+    overflow: hidden; /* To ensure the model-viewer stays within the circle */
 }
-.dog-avatar {
-    font-size: 150px;
+model-viewer {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    --poster-color: transparent;
 }
 
 /* Profile Grid */

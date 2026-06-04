@@ -35,7 +35,16 @@
             <a href="#profile" class="cta-button">프로필 보기 ↓</a>
         </div>
         <div class="hero-visual" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
-            <div class="dog-avatar">🐶</div>
+            <model-viewer 
+                src="Nudaeng.glb" 
+                alt="A 3D model of Nudaeng" 
+                auto-rotate 
+                camera-controls
+                shadow-intensity="1"
+                environment-image="neutral"
+                exposure="1"
+                interaction-prompt="auto">
+            </model-viewer>
         </div>
     </section>
 
@@ -185,7 +194,8 @@
         </div>
     </footer>
 
-    <!-- Scripts for animations -->
+    <!-- Scripts for animations and 3D -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
