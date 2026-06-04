@@ -123,11 +123,15 @@
                 if(snackCount === 0) {
                     $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
                 }
-                const snacks = ['🦴 개껌', '🥩 고기반찬', '🍠 고구마', '🍎 사과'];
-                const randomSnack = snacks[Math.floor(Math.random() * snacks.length)];
+                const foodMenu = [
+                    { name: '🧀 나쵸', reaction: '에잇 이게 뭐에윸!!' },
+                    { name: '🍲 갈비탕', reaction: '뭐 이 정도면 괜찮네유.' },
+                    { name: '🍕 피자', reaction: '챱챱챱ㅊ뱌' }
+                ];
+                const randomFood = foodMenu[Math.floor(Math.random() * foodMenu.length)];
                 
                 // append()로 리스트 맨 끝에 추가
-                $("#snack-list").append("<li>" + randomSnack + "이(가) 투척되었습니다! 왈왈!</li>");
+                $("#snack-list").append("<li><strong>" + randomFood.name + "</strong> 투척! ➡️ " + randomFood.reaction + "</li>");
                 snackCount++;
             });
 
