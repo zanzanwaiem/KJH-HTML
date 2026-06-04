@@ -51,7 +51,7 @@
                     <div class="snack-bowl mt-20" style="text-align: center;">
                         <img id="reaction-img" src="images/interactive/ing.png" alt="Nudaeng Reaction" style="max-height: 120px; margin-bottom: 15px; border-radius: 10px; object-fit: contain;">
                         <ul id="snack-list" style="text-align: left;">
-                            <li>빈 밥그릇입니다... 배고파유</li>
+                            <li>격식에 맞는 식사를 준비해 주시죠.</li>
                         </ul>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="hide-seek-box mt-20" id="nudaeng-box">
-                        짜잔! 누댕이가 여기 있어유!
+                        제가 이런 유치한 장난에 어울려 드려야 합니까?
                     </div>
                 </div>
 
@@ -121,17 +121,17 @@
                     $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
                 }
                 const foodMenu = [
-                    { name: '나쵸', reaction: '에잇 이게 뭐에윸!!', img: 'images/interactive/bad.png' },
-                    { name: '갈비탕', reaction: '뭐 이 정도면 괜찮네유.', img: 'images/interactive/good.png' },
-                    { name: '피자', reaction: '챱챱챱ㅊ뱌', img: 'images/interactive/love.png' },
-                    { name: '수제버거', reaction: '와아아아앙! 고기 패티 최고에유!', img: 'images/interactive/love.png' },
-                    { name: '양념치킨', reaction: '바삭바삭! 뼈는 발라주실 거쥬?', img: 'images/interactive/love.png' },
-                    { name: '마라탕', reaction: '씁하 씁하... 너무 매워유', img: 'images/interactive/bad.png' },
-                    { name: '연어초밥', reaction: '음~ 입에서 사르르 녹네유.', img: 'images/interactive/good.png' },
-                    { name: '다이어트 샐러드', reaction: '풀떼기 안 먹어유!!! 고기 내놔유!!', img: 'images/interactive/bad.png' },
-                    { name: '한우 꽃등심', reaction: '츄베릅... 더 없나유?!', img: 'images/interactive/love.png' },
-                    { name: '아메리카노', reaction: '우웩 써유!! 어린이 입맛이라구유!', img: 'images/interactive/bad.png' },
-                    { name: '탕후루', reaction: '달달구리 최고에유 탕탕 후루후루~', img: 'images/interactive/good.png' }
+                    { name: '나쵸', reaction: '하아... 이런 걸 간식이라고 주시는 건가요? 성의를 봐서 참겠습니다.', img: 'images/interactive/bad.png' },
+                    { name: '갈비탕', reaction: '뭐, 가끔은 이런 서민적인 국물 요리도 나쁘지 않군요.', img: 'images/interactive/good.png' },
+                    { name: '피자', reaction: '흠... 관리에 치명적이긴 합니다만, 특별히 한 입만 먹어드리죠.', img: 'images/interactive/love.png' },
+                    { name: '수제버거', reaction: '패티의 굽기가 제 기준엔 살짝 못 미치지만... 나름 훌륭하군요.', img: 'images/interactive/love.png' },
+                    { name: '양념치킨', reaction: '손에 묻히는 건 질색입니다만. 뼈 정도는 발라주실 거라 믿습니다.', img: 'images/interactive/love.png' },
+                    { name: '마라탕', reaction: '이런 자극적인 향신료는 제 고상한 미각을 해칩니다만?', img: 'images/interactive/bad.png' },
+                    { name: '연어초밥', reaction: '음, 온도감이 나쁘지 않네요. 다음엔 참다랑어 뱃살로 부탁드립니다.', img: 'images/interactive/good.png' },
+                    { name: '다이어트 샐러드', reaction: '제가 초식동물로 보이시나요? 다음부터 이런 풀은 치워주시죠.', img: 'images/interactive/bad.png' },
+                    { name: '한우 꽃등심', reaction: '이 정도 마블링은 되어야 제 품격에 맞죠. 물론 티는 내지 않겠습니다.', img: 'images/interactive/love.png' },
+                    { name: '아메리카노', reaction: '이런 쓴 물을 왜 마시는지 이해할 수가 없군요. 치워주세요.', img: 'images/interactive/bad.png' },
+                    { name: '탕후루', reaction: '당 수치가 올라가는 소리가 들리네요. 그래도 색감은 예쁘군요.', img: 'images/interactive/good.png' }
                 ];
                 const randomFood = foodMenu[Math.floor(Math.random() * foodMenu.length)];
                 
@@ -147,7 +147,7 @@
                 // 이미지 초기화
                 $("#reaction-img").attr("src", "images/interactive/ing.png");
                 // empty()로 내부 요소 모두 삭제 후 초기화
-                $("#snack-list").empty().append("<li>빈 밥그릇입니다... 배고파유</li>");
+                $("#snack-list").empty().append("<li>격식에 맞는 식사를 준비해 주시죠.</li>");
                 snackCount = 0;
             });
 
@@ -158,10 +158,10 @@
                 
                 // css()와 text()를 이용한 직접 제어
                 if ($("#theme-card").hasClass("dark-mode")) {
-                    $("#theme-text").text("불이 꺼졌습니다! 코오 자는 중...");
+                    $("#theme-text").text("조도가 낮아졌군요. 저의 프라이버시를 지켜주셔서 감사합니다.");
                     $("#theme-text").css("color", "#F2A65A");
                 } else {
-                    $("#theme-text").text("현재는 환하게 불이 켜져 있습니다.");
+                    $("#theme-text").text("이런 과한 조명은 제 피부에 좋지 않습니다만.");
                     $("#theme-text").css("color", "inherit");
                 }
             });
@@ -169,7 +169,7 @@
             // 3. HTML 이벤트 처리
             $("#petting-zone").mouseenter(function() {
                 // 마우스가 올라갔을 때
-                $(this).text("아유 시원해유~ 꼬리 붕붕붕");
+                $(this).text("하아... 함부로 만지지 마시죠. (하지만 기분은 나쁘지 않네요.)");
                 $(this).css({
                     "background-color": "#D97736",
                     "color": "white",
@@ -180,7 +180,7 @@
 
             $("#petting-zone").mouseleave(function() {
                 // 마우스가 나갔을 때
-                $(this).text("어디가유? 더 쓰다듬어 주세유...");
+                $(this).text("벌써 끝이신가요? 제 인내심을 테스트하시는군요.");
                 $(this).css({
                     "background-color": "#FFF5EC",
                     "color": "#D97736",
