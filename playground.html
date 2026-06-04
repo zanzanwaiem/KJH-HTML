@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NUDAENG | Playground</title>
-    
+
     <!-- Fonts: Noto Sans KR -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
 <body>
 
     <!-- Navigation -->
@@ -40,16 +43,17 @@
     <section class="playground-section">
         <div class="container">
             <div class="grid-2">
-                
+
                 <!-- 1. 간식 주기 -->
                 <div class="play-card" data-aos="fade-up" data-aos-delay="100">
                     <h2>누댕이 밥 주기</h2>
                     <p>버튼을 눌러 맛있는 음식들을 투척해 보세요!</p>
                     <button class="cta-button" id="btn-feed">간식 투척!</button>
                     <button class="cta-button outline" id="btn-clear-feed">그릇 비우기</button>
-                    
+
                     <div class="snack-bowl mt-20" style="text-align: center;">
-                        <img id="reaction-img" src="images/interactive/ing.png" alt="Nudaeng Reaction" style="max-height: 120px; margin-bottom: 15px; border-radius: 10px; object-fit: contain;">
+                        <img id="reaction-img" src="images/interactive/ing.png" alt="Nudaeng Reaction"
+                            style="max-height: 120px; margin-bottom: 15px; border-radius: 10px; object-fit: contain;">
                         <ul id="snack-list" style="text-align: left;">
                             <li>밥주세유</li>
                         </ul>
@@ -61,7 +65,7 @@
                     <h2>불 끄기</h2>
                     <p>누댕이가 잘 수 있게 방 안의 불을 꺼주세요.</p>
                     <button class="cta-button" id="btn-theme">불 끄기/켜기</button>
-                    
+
                     <div class="theme-preview mt-20">
                         <h3 id="theme-text">현재는 환하게 불이 켜져 있습니다.</h3>
                     </div>
@@ -71,7 +75,7 @@
                 <div class="play-card" data-aos="fade-up" data-aos-delay="300">
                     <h2>누댕이 쓰다듬기</h2>
                     <p>마우스를 박스 위로 올려 부드럽게 쓰다듬어 주세요.</p>
-                    
+
                     <div class="petting-zone mt-20" id="petting-zone">
                         안녕!
                     </div>
@@ -81,7 +85,7 @@
                 <div class="play-card" data-aos="fade-up" data-aos-delay="400">
                     <h2>누댕이 숨바꼭질</h2>
                     <p>버튼을 눌러 누댕이와 재미있는 숨바꼭질을 해보세요.</p>
-                    
+
                     <div class="action-buttons">
                         <button class="cta-button" id="btn-hide">숨기기</button>
                         <button class="cta-button outline" id="btn-show">찾기</button>
@@ -112,12 +116,12 @@
         /* =========================================
            jQuery Scripts
            ========================================= */
-        $(document).ready(function() {
-            
+        $(document).ready(function () {
+
             // 1. DOM 조작 (HTML 추가/삭제)
             let snackCount = 0;
-            $("#btn-feed").click(function() {
-                if(snackCount === 0) {
+            $("#btn-feed").click(function () {
+                if (snackCount === 0) {
                     $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
                 }
                 const foodMenu = [
@@ -134,16 +138,16 @@
                     { name: '탕후루', reaction: '이거 괜찮네유.', img: 'images/interactive/good.png' }
                 ];
                 const randomFood = foodMenu[Math.floor(Math.random() * foodMenu.length)];
-                
+
                 // 이미지 변경
                 $("#reaction-img").attr("src", randomFood.img);
-                
+
                 // append()로 리스트 맨 끝에 추가
                 $("#snack-list").append("<li><strong>" + randomFood.name + "</strong> 투척! ➡️ " + randomFood.reaction + "</li>");
                 snackCount++;
             });
 
-            $("#btn-clear-feed").click(function() {
+            $("#btn-clear-feed").click(function () {
                 // 이미지 초기화
                 $("#reaction-img").attr("src", "images/interactive/ing.png");
                 // empty()로 내부 요소 모두 삭제 후 초기화
@@ -152,10 +156,10 @@
             });
 
             // 2. CSS 조작
-            $("#btn-theme").click(function() {
+            $("#btn-theme").click(function () {
                 // toggleClass()를 이용해 클래스를 넣었다 뺐다 함
                 $("#theme-card").toggleClass("dark-mode");
-                
+
                 // css()와 text()를 이용한 직접 제어
                 if ($("#theme-card").hasClass("dark-mode")) {
                     $("#theme-text").text("어두워서 잠이 오네유. 코오...");
@@ -167,9 +171,9 @@
             });
 
             // 3. HTML 이벤트 처리
-            $("#petting-zone").mouseenter(function() {
+            $("#petting-zone").mouseenter(function () {
                 // 마우스가 올라갔을 때
-                $(this).html('<img src="images/interactive/ye.png" alt="YES" style="max-height: 80px; vertical-align: middle; margin-right: 15px;">좋네유.');
+                $(this).html('<img src="images/interactive/YES.png" alt="YES" style="max-height: 80px; vertical-align: middle; margin-right: 15px;">좋네유.');
                 $(this).css({
                     "background-color": "#D97736",
                     "color": "white",
@@ -178,7 +182,7 @@
                 });
             });
 
-            $("#petting-zone").mouseleave(function() {
+            $("#petting-zone").mouseleave(function () {
                 // 마우스가 나갔을 때
                 $(this).html("안녕!");
                 $(this).css({
@@ -189,17 +193,17 @@
             });
 
             // 4. 효과 및 애니메이션 (Effect)
-            $("#btn-hide").click(function() {
+            $("#btn-hide").click(function () {
                 // 위로 스르륵 사라짐
-                $("#nudaeng-box").slideUp(500); 
+                $("#nudaeng-box").slideUp(500);
             });
 
-            $("#btn-show").click(function() {
+            $("#btn-show").click(function () {
                 // 아래로 스르륵 나타남
                 $("#nudaeng-box").slideDown(500);
             });
 
-            $("#btn-fade").click(function() {
+            $("#btn-fade").click(function () {
                 // 서서히 사라졌다 나타났다 토글
                 $("#nudaeng-box").fadeToggle(800);
             });
@@ -207,4 +211,5 @@
         });
     </script>
 </body>
+
 </html>
