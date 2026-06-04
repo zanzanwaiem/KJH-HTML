@@ -169,7 +169,7 @@
             // 3. HTML 이벤트 처리
             $("#petting-zone").mouseenter(function() {
                 // 마우스가 올라갔을 때
-                $(this).text("흥, 막 만지지 마세유! (꼬리 살랑살랑)");
+                $(this).html('<img src="images/interactive/ye.png" alt="YES" style="max-height: 80px; vertical-align: middle; margin-right: 15px;">흥, 막 만지지 마세유! (꼬리 살랑살랑)');
                 $(this).css({
                     "background-color": "#D97736",
                     "color": "white",
@@ -180,7 +180,7 @@
 
             $("#petting-zone").mouseleave(function() {
                 // 마우스가 나갔을 때
-                $(this).text("어딜 가유? 아직 다 안 쓰다듬었잖아유.");
+                $(this).html("어딜 가유? 아직 다 안 쓰다듬었잖아유.");
                 $(this).css({
                     "background-color": "#FFF5EC",
                     "color": "#D97736",
