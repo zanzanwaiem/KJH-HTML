@@ -157,11 +157,12 @@
         const indicator = document.getElementById('indicator');
         const face = document.getElementById('face');
 
-        let audioCtx;
-        let sourceNode;
+        let audioCtx = null;
+        let sourceNode = null;
         let audioBuffer = null;
         let audioArrayBuffer = null;
         let isPlaying = false;
+        let isInitializing = false;
 
         // 1. 페이지 로드 시 오디오 파일 미리 가져오기
         window.onload = () => {
@@ -173,14 +174,7 @@
 
         // 2. 상호작용 시 오디오 컨텍스트 초기화 및 디코딩
         async function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            // 브라우저 정책상 사용자 인터랙션 이후에 resume 필요
-            if (audioCtx.state === 'suspended') {
-                await audioCtx.resume();
-            }
-            if (!audioBuffer && audioArrayBuffer) {
+            if (!audioBuffer && audioArrayBuffer && audioCtx) {
                 try {
                     // 원본 ArrayBuffer를 유지하기 위해 복사본 사용
                     audioBuffer = await audioCtx.decodeAudioData(audioArrayBuffer.slice(0));
@@ -192,11 +186,18 @@
 
         // 3. 소리 재생 및 정지
         async function startSound(yRatio) {
+            if (isInitializing) return;
+            isInitializing = true;
+
             await initAudio();
-            if (!audioBuffer) return; // 로드 실패 시 무시
+            
+            if (!audioBuffer) {
+                isInitializing = false;
+                return; // 로드 실패 또는 아직 로딩중
+            }
             
             if (sourceNode) {
-                sourceNode.stop();
+                try { sourceNode.stop(); } catch(e){}
             }
 
             sourceNode = audioCtx.createBufferSource();
@@ -208,15 +209,17 @@
             sourceNode.start(0);
             
             isPlaying = true;
+            isInitializing = false;
             face.classList.add('playing');
         }
 
         function stopSound() {
             if (sourceNode) {
-                sourceNode.stop();
+                try { sourceNode.stop(); } catch(e){}
                 sourceNode = null;
             }
             isPlaying = false;
+            isInitializing = false;
             face.classList.remove('playing');
         }
 
@@ -232,6 +235,14 @@
         function handleInteraction(e) {
             e.preventDefault(); // 스크롤 방지
             
+            // 브라우저 정책상 동기적 컨텍스트 생성/resume 필요
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             let clientY;
             if (e.touches) {
                 clientY = e.touches[0].clientY;
@@ -240,19 +251,17 @@
             }
 
             const rect = touchArea.getBoundingClientRect();
-            // 바 안에서의 상대적 Y 위치 (0 ~ 1)
             let y = clientY - rect.top;
             if (y < 0) y = 0;
             if (y > rect.height) y = rect.height;
             
             let yRatio = y / rect.height;
 
-            // 시각적 인디케이터 이동
             indicator.style.top = (yRatio * 100) + '%';
 
             if (!isPlaying) {
                 startSound(yRatio);
-            } else {
+            } else if (sourceNode) {
                 updatePitch(yRatio);
             }
         }
