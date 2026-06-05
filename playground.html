@@ -42,13 +42,16 @@
     <!-- Playground Section -->
     <section class="playground-section">
         <div class="container">
-            <div class="grid-2">
+            <div style="max-width: 600px; margin: 0 auto;">
 
                 <!-- 1. 간식 주기 -->
                 <div class="play-card" data-aos="fade-up" data-aos-delay="100">
                     <h2>누댕이 밥 주기</h2>
-                    <p>버튼을 눌러 맛있는 음식들을 투척해 보세요!</p>
-                    <button class="cta-button" id="btn-feed">간식 투척!</button>
+                    <p>버튼을 눌러 맛있는 음식들을 투척해 보세요! (1회 투척 시 10 코인 소모)</p>
+                    <div style="font-weight: bold; font-size: 1.2rem; color: #D97736; margin-bottom: 15px;">
+                        현재 보유 재화: <span id="coin-count">200</span> 누댕코인
+                    </div>
+                    <button class="cta-button" id="btn-feed">간식 투척! (-10 코인)</button>
                     <button class="cta-button outline" id="btn-clear-feed">그릇 비우기</button>
 
                     <div class="snack-bowl mt-20" style="text-align: center;">
@@ -57,43 +60,6 @@
                         <ul id="snack-list" style="text-align: left;">
                             <li>밥주세유</li>
                         </ul>
-                    </div>
-                </div>
-
-                <!-- 2. 다크모드 -->
-                <div class="play-card" id="theme-card" data-aos="fade-up" data-aos-delay="200">
-                    <h2>불 끄기</h2>
-                    <p>누댕이가 잘 수 있게 방 안의 불을 꺼주세요.</p>
-                    <button class="cta-button" id="btn-theme">불 끄기/켜기</button>
-
-                    <div class="theme-preview mt-20">
-                        <h3 id="theme-text">현재는 환하게 불이 켜져 있습니다.</h3>
-                    </div>
-                </div>
-
-                <!-- 3. 쓰다듬기 -->
-                <div class="play-card" data-aos="fade-up" data-aos-delay="300">
-                    <h2>누댕이 쓰다듬기</h2>
-                    <p>마우스를 박스 위로 올려 부드럽게 쓰다듬어 주세요.</p>
-
-                    <div class="petting-zone mt-20" id="petting-zone">
-                        안녕!
-                    </div>
-                </div>
-
-                <!-- 4. 숨바꼭질 -->
-                <div class="play-card" data-aos="fade-up" data-aos-delay="400">
-                    <h2>누댕이 숨바꼭질</h2>
-                    <p>버튼을 눌러 누댕이와 재미있는 숨바꼭질을 해보세요.</p>
-
-                    <div class="action-buttons">
-                        <button class="cta-button" id="btn-hide">숨기기</button>
-                        <button class="cta-button outline" id="btn-show">찾기</button>
-                        <button class="cta-button" style="background:#E74C3C;" id="btn-fade">마술 부리기</button>
-                    </div>
-
-                    <div class="hide-seek-box mt-20" id="nudaeng-box">
-                        흥, 숨바꼭질 같은 거 안 해유. 어린애도 아니구유.
                     </div>
                 </div>
 
@@ -120,7 +86,18 @@
 
             // 1. DOM 조작 (HTML 추가/삭제)
             let snackCount = 0;
+            let coinCount = 200; // 초기 재화
+
             $("#btn-feed").click(function () {
+                if (coinCount < 10) {
+                    alert("누댕코인이 부족합니다! 결제 페이지로 이동합니다.");
+                    window.location.href = "subscribe.html";
+                    return;
+                }
+
+                coinCount -= 10;
+                $("#coin-count").text(coinCount);
+
                 if (snackCount === 0) {
                     $("#snack-list").empty(); // 첫 간식 줄 때 빈 그릇 메시지 삭제
                 }
@@ -153,59 +130,6 @@
                 // empty()로 내부 요소 모두 삭제 후 초기화
                 $("#snack-list").empty().append("<li>밥주세유</li>");
                 snackCount = 0;
-            });
-
-            // 2. CSS 조작
-            $("#btn-theme").click(function () {
-                // toggleClass()를 이용해 클래스를 넣었다 뺐다 함
-                $("#theme-card").toggleClass("dark-mode");
-
-                // css()와 text()를 이용한 직접 제어
-                if ($("#theme-card").hasClass("dark-mode")) {
-                    $("#theme-text").text("어두워서 잠이 오네유. 코오...");
-                    $("#theme-text").css("color", "#F2A65A");
-                } else {
-                    $("#theme-text").text("눈부셔유. 불 좀 꺼주세유.");
-                    $("#theme-text").css("color", "inherit");
-                }
-            });
-
-            // 3. HTML 이벤트 처리
-            $("#petting-zone").mouseenter(function () {
-                // 마우스가 올라갔을 때
-                $(this).html('<img src="images/interactive/YES.png" alt="YES" width="80" height="80" style="vertical-align: middle; margin-right: 15px;">좋네유.');
-                $(this).css({
-                    "background-color": "#D97736",
-                    "color": "white",
-                    "transform": "scale(1.05)",
-                    "transition": "all 0.3s"
-                });
-            });
-
-            $("#petting-zone").mouseleave(function () {
-                // 마우스가 나갔을 때
-                $(this).html("안녕!");
-                $(this).css({
-                    "background-color": "#FFF5EC",
-                    "color": "#D97736",
-                    "transform": "scale(1)"
-                });
-            });
-
-            // 4. 효과 및 애니메이션 (Effect)
-            $("#btn-hide").click(function () {
-                // 위로 스르륵 사라짐
-                $("#nudaeng-box").slideUp(500);
-            });
-
-            $("#btn-show").click(function () {
-                // 아래로 스르륵 나타남
-                $("#nudaeng-box").slideDown(500);
-            });
-
-            $("#btn-fade").click(function () {
-                // 서서히 사라졌다 나타났다 토글
-                $("#nudaeng-box").fadeToggle(800);
             });
 
         });
