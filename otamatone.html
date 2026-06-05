@@ -19,6 +19,7 @@
             flex-direction: column;
             align-items: center;
             height: 100vh;
+            height: 100dvh; /* 모바일 하단바 대응 */
             overflow: hidden;
             touch-action: none; /* 드래그 시 화면 스크롤 방지 */
         }
@@ -49,6 +50,7 @@
             border: 3px solid #000;
             box-shadow: 3px 3px 0px rgba(0,0,0,1);
             transition: transform 0.1s;
+            z-index: 20;
         }
         .back-button:active {
             transform: translate(3px, 3px);
@@ -63,12 +65,15 @@
             margin-top: 20px;
             height: 70vh;
             justify-content: flex-end;
+            padding-bottom: 20px; /* 모바일 하단 여백 추가 */
         }
 
         /* 음정 바 (Stem) */
         .stem-container {
             width: 40px;
-            height: 400px;
+            height: 40vh; /* 고정픽셀(400px)에서 뷰포트 비율로 변경 */
+            min-height: 250px;
+            max-height: 400px;
             background: #2C1A0E;
             border: 4px solid #000;
             border-radius: 20px;
@@ -122,6 +127,34 @@
         /* 눈, 입 (nnn.png 이미지를 사용하므로 기존 CSS 도형은 숨김) */
         .eye, .mouth {
             display: none;
+        }
+
+        /* 모바일 반응형 처리 */
+        @media (max-width: 600px) {
+            .header {
+                margin-top: 70px; /* 뒤로가기 버튼과 겹침 방지 */
+            }
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            .header p {
+                font-size: 0.95rem;
+                padding: 0 20px;
+                word-break: keep-all;
+            }
+            .face {
+                width: 130px;
+                height: 130px;
+            }
+            .back-button {
+                top: 15px;
+                left: 15px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .matone-container {
+                height: 65vh; /* 화면 높이에 맞게 조절 */
+            }
         }
 
         /* 오디오 파일 안내 (제거) */
