@@ -160,86 +160,114 @@
         let audioCtx = null;
         let sourceNode = null;
         let audioBuffer = null;
-        let audioArrayBuffer = null;
         let isPlaying = false;
         let isInitializing = false;
 
-        // 1. 페이지 로드 시 오디오 파일 미리 가져오기
-        window.onload = () => {
-            fetch('nutamatone.wav')
-                .then(res => res.arrayBuffer())
-                .then(buf => { audioArrayBuffer = buf; })
-                .catch(e => console.error("Audio fetch error:", e));
-        };
-
-        // 2. 상호작용 시 오디오 컨텍스트 초기화 및 디코딩
-        async function initAudio() {
-            if (!audioBuffer && audioArrayBuffer && audioCtx) {
-                try {
-                    // 원본 ArrayBuffer를 유지하기 위해 복사본 사용
-                    audioBuffer = await audioCtx.decodeAudioData(audioArrayBuffer.slice(0));
-                } catch (e) {
-                    console.error("Audio decode error:", e);
+        // 1. 오디오 초기화 및 파일 로드 (가장 안전한 방식)
+        function initAudio() {
+            return new Promise((resolve, reject) => {
+                if (audioBuffer) {
+                    resolve();
+                    return;
                 }
-            }
+                
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                // 파일 가져오기
+                fetch('nutamatone.wav')
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.arrayBuffer();
+                    })
+                    .then(arrayBuffer => {
+                        // 사파리 호환성을 위해 콜백 방식 사용
+                        audioCtx.decodeAudioData(arrayBuffer, function(buffer) {
+                            audioBuffer = buffer;
+                            resolve();
+                        }, function(e) {
+                            console.error("Decode error", e);
+                            reject(e);
+                        });
+                    })
+                    .catch(e => {
+                        console.error("Fetch error", e);
+                        reject(e);
+                    });
+            });
         }
 
-        // 3. 소리 재생 및 정지
-        async function startSound(yRatio) {
+        // 2. 소리 재생
+        function startSound(yRatio) {
             if (isInitializing) return;
-            isInitializing = true;
-
-            await initAudio();
             
+            // 아직 로드되지 않은 경우 초기화
             if (!audioBuffer) {
-                isInitializing = false;
-                return; // 로드 실패 또는 아직 로딩중
+                isInitializing = true;
+                indicator.style.background = "#FF0000"; // 로딩 중 표시 (빨간색)
+                initAudio().then(() => {
+                    isInitializing = false;
+                    indicator.style.background = "#D97736"; // 로딩 완료 복구
+                    if (isPlaying) { // 사용자가 여전히 누르고 있다면
+                        playSource(yRatio);
+                    }
+                }).catch(() => {
+                    isInitializing = false;
+                    alert("소리 로드에 실패했습니다. 파일이 있는지 확인해주세요.");
+                });
+                return;
             }
-            
+
+            playSource(yRatio);
+        }
+
+        // 실제 소스 재생 로직
+        function playSource(yRatio) {
             if (sourceNode) {
                 try { sourceNode.stop(); } catch(e){}
             }
 
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = audioBuffer;
-            sourceNode.loop = true; // 소리 반복
+            sourceNode.loop = true;
             sourceNode.connect(audioCtx.destination);
             
             updatePitch(yRatio);
             sourceNode.start(0);
             
-            isPlaying = true;
-            isInitializing = false;
             face.classList.add('playing');
         }
 
+        // 3. 소리 멈춤
         function stopSound() {
             if (sourceNode) {
                 try { sourceNode.stop(); } catch(e){}
                 sourceNode = null;
             }
             isPlaying = false;
-            isInitializing = false;
             face.classList.remove('playing');
         }
 
         // 4. Y축 위치에 따른 음정 조절 (PlaybackRate 사용)
         function updatePitch(yRatio) {
-            if (sourceNode) {
+            if (sourceNode && sourceNode.playbackRate) {
+                // 0.5배속(낮은음) ~ 2.0배속(높은음)
                 const rate = 0.5 + (1 - yRatio) * 1.5;
                 sourceNode.playbackRate.value = rate;
             }
         }
 
-        // 5. 이벤트 핸들러 처리
+        // 5. 상호작용 핸들러
         function handleInteraction(e) {
             e.preventDefault(); // 스크롤 방지
             
-            // 브라우저 정책상 동기적 컨텍스트 생성/resume 필요
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
+            // 모바일 사파리 필수: 상호작용 즉시 resume
+            if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
 
@@ -260,8 +288,9 @@
             indicator.style.top = (yRatio * 100) + '%';
 
             if (!isPlaying) {
+                isPlaying = true;
                 startSound(yRatio);
-            } else if (sourceNode) {
+            } else {
                 updatePitch(yRatio);
             }
         }
