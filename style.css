@@ -86,7 +86,7 @@ h1, h2, h3, h4 {
     font-size: 1.5rem;
     font-weight: 900;
     letter-spacing: -0.5px;
-    color: #254F1A;
+    color: #D97736;
 }
 .nav-links {
     list-style: none;
@@ -122,8 +122,8 @@ section {
     align-items: center;
     justify-content: space-between;
     padding: 100px 5% 0 5%;
-    background-color: #254F1A; /* Linktree Dark Green */
-    color: #D2E823; /* Linktree Lime */
+    background-color: #4A2C18; /* Fall Warm Tone Dark Brown */
+    color: #FFF5EC; /* Cream */
 }
 .hero-content {
     max-width: 650px;
@@ -132,13 +132,13 @@ section {
 .badge {
     display: inline-block;
     padding: 8px 18px;
-    background: #D2E823;
-    color: #254F1A;
+    background: #F2A65A; /* Warm Light Orange */
+    color: #4A2C18;
     border-radius: 30px;
     font-weight: 800;
     font-size: 0.95rem;
     margin-bottom: 2rem;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
 }
 .hero h1 {
     font-size: 4.5rem;
@@ -146,12 +146,12 @@ section {
     line-height: 1.1;
     margin-bottom: 1.5rem;
     letter-spacing: -2px;
-    color: #D2E823;
+    color: #F2A65A;
     word-break: keep-all;
 }
 .hero p {
     font-size: 1.3rem;
-    color: #EAE5E0;
+    color: #FFF5EC;
     margin-bottom: 3rem;
     font-weight: 500;
     line-height: 1.5;
@@ -164,8 +164,8 @@ section {
 .cta-button {
     display: inline-block;
     padding: 1.2rem 2.5rem;
-    background: #E9C0E9; /* Linktree Soft Purple / Pink */
-    color: #000;
+    background: #D97736; /* Accent Orange */
+    color: #fff;
     text-decoration: none;
     border-radius: 40px;
     font-weight: 800;
@@ -174,7 +174,7 @@ section {
     border: none;
 }
 .cta-button:hover {
-    background: #D9A0D9;
+    background: #BF652A;
     transform: translateY(-3px);
 }
 .cta-button.outline {
@@ -345,8 +345,8 @@ model-viewer {
     box-shadow: 4px 4px 0px rgba(0,0,0,0.9);
 }
 .rank-item.tier-0 {
-    background: #D2E823;
-    border-left: 10px solid #254F1A;
+    background: #FFF5EC;
+    border-left: 10px solid #D97736;
 }
 .rank-item.tier-bottom {
     background: #F8F9FA;
