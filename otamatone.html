@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>누댕마톤 (Nudaeng-matone)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #4A2C18; /* 가을 웜톤 배경 */
+            color: #FFF5EC;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none; /* 드래그 시 화면 스크롤 방지 */
+        }
+        .header {
+            margin-top: 30px;
+            text-align: center;
+            z-index: 10;
+        }
+        .header h1 {
+            font-size: 3rem;
+            color: #F2A65A;
+            text-shadow: 2px 2px 0px #000;
+        }
+        .header p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #D97736;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px rgba(0,0,0,1);
+            transition: transform 0.1s;
+        }
+        .back-button:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0px rgba(0,0,0,1);
+        }
+
+        /* 누댕마톤 컨테이너 */
+        .matone-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            height: 70vh;
+            justify-content: flex-end;
+        }
+
+        /* 음정 바 (Stem) */
+        .stem-container {
+            width: 40px;
+            height: 400px;
+            background: #2C1A0E;
+            border: 4px solid #000;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.5);
+            margin-bottom: -20px; /* 얼굴과 겹치게 */
+            z-index: 1;
+        }
+        .stem-touch-area {
+            position: absolute;
+            top: 0;
+            left: -30px; /* 터치 영역 확대 */
+            right: -30px;
+            bottom: 0;
+            z-index: 2;
+        }
+        .stem-indicator {
+            position: absolute;
+            left: -10px;
+            width: 52px;
+            height: 20px;
+            background: #D97736;
+            border: 3px solid #000;
+            border-radius: 10px;
+            pointer-events: none;
+            transform: translateY(-50%);
+            top: 50%;
+            transition: top 0.05s ease-out;
+        }
+
+        /* 누댕이 얼굴 (Face) */
+        .face {
+            width: 150px;
+            height: 140px;
+            background: #FDFCF9;
+            border: 6px solid #000;
+            border-radius: 50%;
+            position: relative;
+            z-index: 3;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
+        }
+        .face.playing {
+            transform: scale(1.05);
+            background: #FFE5B4;
+        }
+
+        /* 눈 */
+        .eye {
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+        }
+        .eye.left { left: 40px; }
+        .eye.right { right: 40px; }
+
+        /* 입 */
+        .mouth {
+            width: 40px;
+            height: 10px;
+            background: #000;
+            border-radius: 10px;
+            position: absolute;
+            top: 80px;
+            transition: all 0.1s;
+        }
+        .face.playing .mouth {
+            width: 50px;
+            height: 40px;
+            border-radius: 50%;
+            background: #D97736;
+            border: 4px solid #000;
+        }
+
+        /* 오디오 파일 업로드 안내 */
+        .audio-setup {
+            margin-top: 30px;
+            padding: 20px;
+            background: #F2A65A;
+            border: 3px solid #000;
+            border-radius: 15px;
+            color: #000;
+            text-align: center;
+            box-shadow: 4px 4px 0px rgba(0,0,0,1);
+            max-width: 400px;
+        }
+        .audio-setup input[type="file"] {
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← 뒤로가기</a>
+
+    <div class="header">
+        <h1>누댕마톤 🎵</h1>
+        <p>바를 드래그하여 누댕이의 목소리로 음계를 연주하세요!</p>
+    </div>
+
+    <div class="matone-container">
+        <!-- 음정 조절 바 -->
+        <div class="stem-container" id="stem">
+            <div class="stem-indicator" id="indicator"></div>
+            <div class="stem-touch-area" id="touchArea"></div>
+        </div>
+        
+        <!-- 얼굴 -->
+        <div class="face" id="face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+        </div>
+    </div>
+
+    <div class="audio-setup">
+        <p><strong>🎧 원하는 음성 파일(mp3, wav)을 올려주세요!</strong></p>
+        <p style="font-size: 0.9rem; margin-top: 5px;">음성 파일을 선택하면 누댕마톤의 소리로 사용됩니다.</p>
+        <input type="file" id="audioInput" accept="audio/*">
+    </div>
+
+    <script>
+        const touchArea = document.getElementById('touchArea');
+        const indicator = document.getElementById('indicator');
+        const face = document.getElementById('face');
+        const audioInput = document.getElementById('audioInput');
+
+        let audioCtx;
+        let sourceNode;
+        let audioBuffer = null;
+        let isPlaying = false;
+
+        // 1. 오디오 컨텍스트 초기화 및 파일 로드
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        audioInput.addEventListener('change', function(e) {
+            initAudio();
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                audioCtx.decodeAudioData(ev.target.result, function(buffer) {
+                    audioBuffer = buffer;
+                    alert("음성 파일이 성공적으로 로드되었습니다! 바를 드래그해보세요.");
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        // 2. 소리 재생 및 정지
+        function startSound(yRatio) {
+            if (!audioBuffer) return; // 파일이 없으면 무시
+            initAudio();
+            
+            if (sourceNode) {
+                sourceNode.stop();
+            }
+
+            sourceNode = audioCtx.createBufferSource();
+            sourceNode.buffer = audioBuffer;
+            sourceNode.loop = true; // 소리 반복
+            sourceNode.connect(audioCtx.destination);
+            
+            updatePitch(yRatio);
+            sourceNode.start(0);
+            
+            isPlaying = true;
+            face.classList.add('playing');
+        }
+
+        function stopSound() {
+            if (sourceNode) {
+                sourceNode.stop();
+                sourceNode = null;
+            }
+            isPlaying = false;
+            face.classList.remove('playing');
+        }
+
+        // 3. Y축 위치에 따른 음정 조절 (PlaybackRate 사용)
+        function updatePitch(yRatio) {
+            // yRatio: 0 (위) ~ 1 (아래)
+            // playbackRate: 0.5 (낮은음) ~ 2.0 (높은음) -> 위로 갈수록 높은음
+            // 즉, yRatio가 0일 때 2.0, 1일 때 0.5
+            if (sourceNode) {
+                const rate = 0.5 + (1 - yRatio) * 1.5;
+                sourceNode.playbackRate.value = rate;
+            }
+        }
+
+        // 4. 이벤트 핸들러 처리
+        function handleInteraction(e) {
+            e.preventDefault(); // 스크롤 방지
+            
+            let clientY;
+            if (e.touches) {
+                clientY = e.touches[0].clientY;
+            } else {
+                clientY = e.clientY;
+            }
+
+            const rect = touchArea.getBoundingClientRect();
+            // 바 안에서의 상대적 Y 위치 (0 ~ 1)
+            let y = clientY - rect.top;
+            if (y < 0) y = 0;
+            if (y > rect.height) y = rect.height;
+            
+            let yRatio = y / rect.height;
+
+            // 시각적 인디케이터 이동
+            indicator.style.top = (yRatio * 100) + '%';
+
+            if (!isPlaying) {
+                startSound(yRatio);
+            } else {
+                updatePitch(yRatio);
+            }
+        }
+
+        function endInteraction(e) {
+            e.preventDefault();
+            stopSound();
+        }
+
+        // 마우스 이벤트
+        touchArea.addEventListener('mousedown', handleInteraction);
+        window.addEventListener('mousemove', (e) => {
+            if (isPlaying) handleInteraction(e);
+        });
+        window.addEventListener('mouseup', endInteraction);
+
+        // 터치 이벤트
+        touchArea.addEventListener('touchstart', handleInteraction, {passive: false});
+        touchArea.addEventListener('touchmove', handleInteraction, {passive: false});
+        touchArea.addEventListener('touchend', endInteraction);
+        touchArea.addEventListener('touchcancel', endInteraction);
+
+    </script>
+</body>
+</html>
