@@ -413,6 +413,7 @@ footer h2 {
         justify-content: center;
         text-align: center;
         padding-top: 50px;
+        padding-bottom: 80px; /* 3D 뷰어 하단 넘침 방지 */
         min-height: auto;
     }
     .hero-content {
