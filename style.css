@@ -380,34 +380,85 @@ footer h2 {
 }
 
 /* Responsive */
+/* Responsive */
 @media (max-width: 768px) {
+    /* Navbar */
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+        position: relative;
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+        top: 0;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: none;
+    }
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding-bottom: 10px;
+    }
+    /* Main Layout */
+    section {
+        padding: 60px 0;
+    }
+    /* Hero */
     .hero {
         flex-direction: column;
         justify-content: center;
         text-align: center;
-        padding-top: 100px;
+        padding-top: 50px;
+        min-height: auto;
+    }
+    .hero-content {
+        padding-left: 0;
+    }
+    .hero h1 {
+        font-size: 2.5rem;
     }
     .hero-visual {
-        width: 250px;
-        height: 250px;
-        margin-top: 3rem;
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        aspect-ratio: 4/5;
+        margin-top: 2rem;
+        margin-right: 0;
     }
-    .dog-avatar {
-        font-size: 100px;
+    .cta-container {
+        justify-content: center;
     }
-    .profile-grid, .step-container {
-        flex-direction: column;
-        grid-template-columns: 1fr;
+    /* Grid adjustments */
+    .profile-grid, .step-container, .pricing-grid, .grid-3, .grid-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
     }
-    .nav-links {
-        display: none;
-    }
+    /* Rank Table */
     .rank-item {
         flex-direction: column;
         align-items: flex-start;
     }
     .rank {
         margin-bottom: 0.5rem;
+    }
+    /* Subscribe Carousel */
+    .carousel-container {
+        height: 60vw;
+        min-height: 250px;
+        max-height: 400px;
+    }
+    .sub-header {
+        padding-top: 50px;
+        padding-bottom: 30px;
+    }
+    /* Playground */
+    .play-card {
+        padding: 20px;
     }
 }
 
