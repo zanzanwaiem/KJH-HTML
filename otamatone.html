@@ -103,69 +103,28 @@
         /* 누댕이 얼굴 (Face) */
         .face {
             width: 150px;
-            height: 140px;
-            background: #FDFCF9;
+            height: 150px;
+            background-color: #FDFCF9;
+            background-image: url('nnn.png');
+            background-size: cover;
+            background-position: center;
             border: 6px solid #000;
             border-radius: 50%;
             position: relative;
             z-index: 3;
             box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             transition: transform 0.1s;
         }
         .face.playing {
             transform: scale(1.05);
-            background: #FFE5B4;
         }
 
-        /* 눈 */
-        .eye {
-            width: 15px;
-            height: 15px;
-            background: #000;
-            border-radius: 50%;
-            position: absolute;
-            top: 40px;
-        }
-        .eye.left { left: 40px; }
-        .eye.right { right: 40px; }
-
-        /* 입 */
-        .mouth {
-            width: 40px;
-            height: 10px;
-            background: #000;
-            border-radius: 10px;
-            position: absolute;
-            top: 80px;
-            transition: all 0.1s;
-        }
-        .face.playing .mouth {
-            width: 50px;
-            height: 40px;
-            border-radius: 50%;
-            background: #D97736;
-            border: 4px solid #000;
+        /* 눈, 입 (nnn.png 이미지를 사용하므로 기존 CSS 도형은 숨김) */
+        .eye, .mouth {
+            display: none;
         }
 
-        /* 오디오 파일 업로드 안내 */
-        .audio-setup {
-            margin-top: 30px;
-            padding: 20px;
-            background: #F2A65A;
-            border: 3px solid #000;
-            border-radius: 15px;
-            color: #000;
-            text-align: center;
-            box-shadow: 4px 4px 0px rgba(0,0,0,1);
-            max-width: 400px;
-        }
-        .audio-setup input[type="file"] {
-            margin-top: 15px;
-            font-size: 1rem;
-        }
+        /* 오디오 파일 안내 (제거) */
     </style>
 </head>
 <body>
@@ -191,49 +150,50 @@
         </div>
     </div>
 
-    <div class="audio-setup">
-        <p><strong>🎧 원하는 음성 파일(mp3, wav)을 올려주세요!</strong></p>
-        <p style="font-size: 0.9rem; margin-top: 5px;">음성 파일을 선택하면 누댕마톤의 소리로 사용됩니다.</p>
-        <input type="file" id="audioInput" accept="audio/*">
-    </div>
+    <!-- 업로드 폼 제거됨 -->
 
     <script>
         const touchArea = document.getElementById('touchArea');
         const indicator = document.getElementById('indicator');
         const face = document.getElementById('face');
-        const audioInput = document.getElementById('audioInput');
 
         let audioCtx;
         let sourceNode;
         let audioBuffer = null;
+        let audioArrayBuffer = null;
         let isPlaying = false;
 
-        // 1. 오디오 컨텍스트 초기화 및 파일 로드
-        function initAudio() {
+        // 1. 페이지 로드 시 오디오 파일 미리 가져오기
+        window.onload = () => {
+            fetch('nutamatone.wav')
+                .then(res => res.arrayBuffer())
+                .then(buf => { audioArrayBuffer = buf; })
+                .catch(e => console.error("Audio fetch error:", e));
+        };
+
+        // 2. 상호작용 시 오디오 컨텍스트 초기화 및 디코딩
+        async function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            // 브라우저 정책상 사용자 인터랙션 이후에 resume 필요
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
+            if (!audioBuffer && audioArrayBuffer) {
+                try {
+                    // 원본 ArrayBuffer를 유지하기 위해 복사본 사용
+                    audioBuffer = await audioCtx.decodeAudioData(audioArrayBuffer.slice(0));
+                } catch (e) {
+                    console.error("Audio decode error:", e);
+                }
+            }
         }
 
-        audioInput.addEventListener('change', function(e) {
-            initAudio();
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                audioCtx.decodeAudioData(ev.target.result, function(buffer) {
-                    audioBuffer = buffer;
-                    alert("음성 파일이 성공적으로 로드되었습니다! 바를 드래그해보세요.");
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        });
-
-        // 2. 소리 재생 및 정지
-        function startSound(yRatio) {
-            if (!audioBuffer) return; // 파일이 없으면 무시
-            initAudio();
+        // 3. 소리 재생 및 정지
+        async function startSound(yRatio) {
+            await initAudio();
+            if (!audioBuffer) return; // 로드 실패 시 무시
             
             if (sourceNode) {
                 sourceNode.stop();
@@ -260,18 +220,15 @@
             face.classList.remove('playing');
         }
 
-        // 3. Y축 위치에 따른 음정 조절 (PlaybackRate 사용)
+        // 4. Y축 위치에 따른 음정 조절 (PlaybackRate 사용)
         function updatePitch(yRatio) {
-            // yRatio: 0 (위) ~ 1 (아래)
-            // playbackRate: 0.5 (낮은음) ~ 2.0 (높은음) -> 위로 갈수록 높은음
-            // 즉, yRatio가 0일 때 2.0, 1일 때 0.5
             if (sourceNode) {
                 const rate = 0.5 + (1 - yRatio) * 1.5;
                 sourceNode.playbackRate.value = rate;
             }
         }
 
-        // 4. 이벤트 핸들러 처리
+        // 5. 이벤트 핸들러 처리
         function handleInteraction(e) {
             e.preventDefault(); // 스크롤 방지
             
