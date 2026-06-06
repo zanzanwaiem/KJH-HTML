@@ -213,22 +213,81 @@
             offset: 50,
         });
 
-        // 스무스 스크롤 자바스크립트 강제 적용
-        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+        // 탭(섹션) 전환 로직: 클릭한 메뉴의 내용만 보이고 나머지는 스무스하게 숨김
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        const logo = document.querySelector('.logo');
+
+        // 로고 클릭 시 홈으로 이동
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', () => {
+            switchSection('home');
+            window.history.pushState(null, null, '#home');
+        });
+
+        function switchSection(targetId) {
+            let currentSection = null;
+            sections.forEach(sec => {
+                if (sec.style.display !== 'none' && sec.style.opacity !== '0') {
+                    currentSection = sec;
+                }
+            });
+
+            const targetSection = document.getElementById(targetId);
+
+            if (!targetSection) return;
+            if (currentSection === targetSection) return;
+
+            // 전환 시 최상단으로 스무스하게 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (currentSection) {
+                // 기존 섹션 페이드 아웃
+                currentSection.style.transition = 'opacity 0.4s ease';
+                currentSection.style.opacity = '0';
+                
+                setTimeout(() => {
+                    currentSection.style.display = 'none';
+                    
+                    // 새 섹션 페이드 인
+                    targetSection.style.display = targetId === 'home' ? 'flex' : 'block';
+                    targetSection.style.opacity = '0';
+                    targetSection.style.transition = 'opacity 0.4s ease';
+                    
+                    // 리플로우 강제 발생 (애니메이션 적용을 위해)
+                    void targetSection.offsetWidth;
+                    
+                    targetSection.style.opacity = '1';
+                    
+                    // AOS 애니메이션 갱신
+                    setTimeout(() => { AOS.refresh(); }, 50);
+                }, 400);
+            } else {
+                targetSection.style.display = targetId === 'home' ? 'flex' : 'block';
+                targetSection.style.opacity = '1';
+            }
+        }
+
+        // 네비게이션 링크 클릭 이벤트
+        navLinks.forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    const headerOffset = 100;
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
+                const targetId = this.getAttribute('href').substring(1);
+                switchSection(targetId);
+                window.history.pushState(null, null, '#' + targetId);
+            });
+        });
+
+        // 초기 페이지 로드 시 설정
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1) || 'home';
+            sections.forEach(sec => {
+                if (sec.id !== hash) {
+                    sec.style.display = 'none';
+                    sec.style.opacity = '0';
+                } else {
+                    sec.style.display = sec.id === 'home' ? 'flex' : 'block';
+                    sec.style.opacity = '1';
                 }
             });
         });
