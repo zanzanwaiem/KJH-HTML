@@ -9,7 +9,8 @@
     <!-- Fonts: Noto Sans KR -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 
@@ -40,15 +41,15 @@
             <p>지훈님의 방에서 세상을 관찰하는 거지 출신의 천진난만한 강아지.<br>누댕이의 모든 것을 만나보세요.</p>
             <div class="cta-container">
                 <a href="#profile" class="cta-button">프로필 탐색하기</a>
-                <a href="subscribe.html" class="cta-button outline">사진집 구독 📸</a>
-                <a href="playground.html" class="cta-button outline">누댕이 밥주기 🍖</a>
-                <a href="otamatone.html" class="cta-button">누댕마톤 연주하기 🎵</a>
+                <a href="subscribe.html" class="cta-button outline">사진집 구독</a>
+                <a href="playground.html" class="cta-button outline">누댕이 밥주기</a>
+                <a href="otamatone.html" class="cta-button">누댕마톤 연주하기</a>
             </div>
         </div>
         <div class="hero-visual" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
             <model-viewer src="Nudaeng_WaveDance.glb" alt="A 3D model of Nudaeng in T-pose" auto-rotate autoplay
-                camera-controls camera-target="0m 0.6m 0m" camera-orbit="0deg 80deg 2.5m" shadow-intensity="1" environment-image="neutral" exposure="1"
-                interaction-prompt="auto">
+                camera-controls camera-target="0m 0.6m 0m" camera-orbit="0deg 80deg 2.5m" shadow-intensity="1"
+                environment-image="neutral" exposure="1" interaction-prompt="auto">
             </model-viewer>
         </div>
     </section>
@@ -219,12 +220,12 @@
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
+
                 if (targetElement) {
                     const headerOffset = 100;
                     const elementPosition = targetElement.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
+
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: "smooth"
