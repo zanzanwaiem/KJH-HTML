@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,32 +12,40 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #4A2C18; /* 가을 웜톤 배경 */
+            background-color: #4A2C18;
+            /* 가을 웜톤 배경 */
             color: #FFF5EC;
             display: flex;
             flex-direction: column;
             align-items: center;
             height: 100vh;
-            height: 100dvh; /* 모바일 하단바 대응 */
+            height: 100dvh;
+            /* 모바일 하단바 대응 */
             overflow: hidden;
-            touch-action: none; /* 드래그 시 화면 스크롤 방지 */
+            touch-action: none;
+            /* 드래그 시 화면 스크롤 방지 */
         }
+
         .header {
             margin-top: 30px;
             text-align: center;
             z-index: 10;
         }
+
         .header h1 {
             font-size: 3rem;
             color: #F2A65A;
             text-shadow: 2px 2px 0px #000;
         }
+
         .header p {
             font-size: 1.2rem;
             margin-top: 10px;
         }
+
         .back-button {
             position: absolute;
             top: 20px;
@@ -48,13 +57,14 @@
             border-radius: 30px;
             font-weight: bold;
             border: 3px solid #000;
-            box-shadow: 3px 3px 0px rgba(0,0,0,1);
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
             transition: transform 0.1s;
             z-index: 20;
         }
+
         .back-button:active {
             transform: translate(3px, 3px);
-            box-shadow: 0px 0px 0px rgba(0,0,0,1);
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
         }
 
         /* 누댕마톤 컨테이너 */
@@ -65,13 +75,15 @@
             margin-top: 20px;
             height: 70vh;
             justify-content: flex-end;
-            padding-bottom: 20px; /* 모바일 하단 여백 추가 */
+            padding-bottom: 20px;
+            /* 모바일 하단 여백 추가 */
         }
 
         /* 음정 바 (Stem) */
         .stem-container {
             width: 40px;
-            height: 40vh; /* 고정픽셀(400px)에서 뷰포트 비율로 변경 */
+            height: 40vh;
+            /* 고정픽셀(400px)에서 뷰포트 비율로 변경 */
             min-height: 250px;
             max-height: 400px;
             background: #2C1A0E;
@@ -79,18 +91,22 @@
             border-radius: 20px;
             position: relative;
             cursor: pointer;
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.5);
-            margin-bottom: -20px; /* 얼굴과 겹치게 */
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
+            margin-bottom: -20px;
+            /* 얼굴과 겹치게 */
             z-index: 1;
         }
+
         .stem-touch-area {
             position: absolute;
             top: 0;
-            left: -30px; /* 터치 영역 확대 */
+            left: -30px;
+            /* 터치 영역 확대 */
             right: -30px;
             bottom: 0;
             z-index: 2;
         }
+
         .stem-indicator {
             position: absolute;
             left: -10px;
@@ -117,54 +133,64 @@
             border-radius: 50%;
             position: relative;
             z-index: 3;
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.5);
             transition: transform 0.1s;
         }
+
         .face.playing {
             transform: scale(1.05);
         }
 
         /* 눈, 입 (nnn.png 이미지를 사용하므로 기존 CSS 도형은 숨김) */
-        .eye, .mouth {
+        .eye,
+        .mouth {
             display: none;
         }
 
         /* 모바일 반응형 처리 */
         @media (max-width: 600px) {
             .header {
-                margin-top: 70px; /* 뒤로가기 버튼과 겹침 방지 */
+                margin-top: 70px;
+                /* 뒤로가기 버튼과 겹침 방지 */
             }
+
             .header h1 {
                 font-size: 2.2rem;
             }
+
             .header p {
                 font-size: 0.95rem;
                 padding: 0 20px;
                 word-break: keep-all;
             }
+
             .face {
                 width: 130px;
                 height: 130px;
             }
+
             .back-button {
                 top: 15px;
                 left: 15px;
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
+
             .matone-container {
-                height: 65vh; /* 화면 높이에 맞게 조절 */
+                height: 65vh;
+                /* 화면 높이에 맞게 조절 */
             }
         }
 
         /* 오디오 파일 안내 (제거) */
     </style>
 </head>
+
 <body>
     <a href="index.html" class="back-button">← 뒤로가기</a>
 
     <div class="header">
-        <h1>누댕마톤 🎵</h1>
+        <h1>누댕마톤</h1>
         <p>바를 드래그하여 누댕이의 목소리로 음계를 연주하세요!</p>
     </div>
 
@@ -174,7 +200,7 @@
             <div class="stem-indicator" id="indicator"></div>
             <div class="stem-touch-area" id="touchArea"></div>
         </div>
-        
+
         <!-- 얼굴 -->
         <div class="face" id="face">
             <div class="eye left"></div>
@@ -203,11 +229,11 @@
                     resolve();
                     return;
                 }
-                
+
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                
+
                 if (audioCtx.state === 'suspended') {
                     audioCtx.resume();
                 }
@@ -220,10 +246,10 @@
                     })
                     .then(arrayBuffer => {
                         // 사파리 호환성을 위해 콜백 방식 사용
-                        audioCtx.decodeAudioData(arrayBuffer, function(buffer) {
+                        audioCtx.decodeAudioData(arrayBuffer, function (buffer) {
                             audioBuffer = buffer;
                             resolve();
-                        }, function(e) {
+                        }, function (e) {
                             console.error("Decode error", e);
                             reject(e);
                         });
@@ -238,7 +264,7 @@
         // 2. 소리 재생
         function startSound(yRatio) {
             if (isInitializing) return;
-            
+
             // 아직 로드되지 않은 경우 초기화
             if (!audioBuffer) {
                 isInitializing = true;
@@ -262,24 +288,24 @@
         // 실제 소스 재생 로직
         function playSource(yRatio) {
             if (sourceNode) {
-                try { sourceNode.stop(); } catch(e){}
+                try { sourceNode.stop(); } catch (e) { }
             }
 
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = audioBuffer;
             sourceNode.loop = true;
             sourceNode.connect(audioCtx.destination);
-            
+
             updatePitch(yRatio);
             sourceNode.start(0);
-            
+
             face.classList.add('playing');
         }
 
         // 3. 소리 멈춤
         function stopSound() {
             if (sourceNode) {
-                try { sourceNode.stop(); } catch(e){}
+                try { sourceNode.stop(); } catch (e) { }
                 sourceNode = null;
             }
             isPlaying = false;
@@ -298,7 +324,7 @@
         // 5. 상호작용 핸들러
         function handleInteraction(e) {
             e.preventDefault(); // 스크롤 방지
-            
+
             // 모바일 사파리 필수: 상호작용 즉시 resume
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
@@ -315,7 +341,7 @@
             let y = clientY - rect.top;
             if (y < 0) y = 0;
             if (y > rect.height) y = rect.height;
-            
+
             let yRatio = y / rect.height;
 
             indicator.style.top = (yRatio * 100) + '%';
@@ -341,11 +367,12 @@
         window.addEventListener('mouseup', endInteraction);
 
         // 터치 이벤트
-        touchArea.addEventListener('touchstart', handleInteraction, {passive: false});
-        touchArea.addEventListener('touchmove', handleInteraction, {passive: false});
+        touchArea.addEventListener('touchstart', handleInteraction, { passive: false });
+        touchArea.addEventListener('touchmove', handleInteraction, { passive: false });
         touchArea.addEventListener('touchend', endInteraction);
         touchArea.addEventListener('touchcancel', endInteraction);
 
     </script>
 </body>
+
 </html>
