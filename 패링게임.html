@@ -108,6 +108,10 @@
             y: 180,
             width: 55,
             height: 65,
+            scaleX: 1.0,
+            scaleY: 1.0,
+            scaleVx: 0,
+            scaleVy: 0,
             maxHp: 800,
             hp: 800,
             targetX: 620,
@@ -295,8 +299,21 @@
                 boss.targetX = Math.floor(Math.random() * 470) + 250;
                 boss.targetY = Math.floor(Math.random() * 220) + 60;
             }
-            boss.x += (boss.targetX - boss.x) * 0.04;
-            boss.y += (boss.targetY - boss.y) * 0.04;
+            let bvx = (boss.targetX - boss.x) * 0.04;
+            let bvy = (boss.targetY - boss.y) * 0.04;
+            boss.x += bvx;
+            boss.y += bvy;
+
+            // 스미어(Squash & Stretch) - 쫀득한 물리 효과
+            let targetScaleX = (1.0 + Math.abs(bvx) * 0.03) / (1.0 + Math.abs(bvy) * 0.03);
+            let targetScaleY = (1.0 + Math.abs(bvy) * 0.03) / (1.0 + Math.abs(bvx) * 0.03);
+            
+            boss.scaleVx += (targetScaleX - boss.scaleX) * 0.3; // 스프링 강도
+            boss.scaleVy += (targetScaleY - boss.scaleY) * 0.3;
+            boss.scaleVx *= 0.65; // 마찰(감쇠)력
+            boss.scaleVy *= 0.65;
+            boss.scaleX += boss.scaleVx;
+            boss.scaleY += boss.scaleVy;
 
             boss.patternTimer++;
             if (boss.patternTimer > 220 && boss.hat.state === "IDLE") {
@@ -629,14 +646,20 @@
             let eyeX = player.facing > 0 ? player.x + 14 : player.x + 2;
             ctx.fillRect(eyeX, player.y + 4, 6, 6);
 
+            // 보스 렌더링 (스미어 스케일 적용)
+            ctx.save();
+            ctx.translate(boss.x + boss.width / 2, boss.y + boss.height / 2);
+            ctx.scale(boss.scaleX, boss.scaleY);
+
             if (isImageLoaded) {
-                ctx.drawImage(customBossImg, boss.x, boss.y, boss.width, boss.height);
+                ctx.drawImage(customBossImg, -boss.width / 2, -boss.height / 2, boss.width, boss.height);
             } else {
                 ctx.fillStyle = "#e74c3c";
-                ctx.fillRect(boss.x, boss.y, boss.width, boss.height);
+                ctx.fillRect(-boss.width / 2, -boss.height / 2, boss.width, boss.height);
                 ctx.fillStyle = "#f1c40f";
-                ctx.fillRect(boss.x + 12, boss.y + 15, 21, 25);
+                ctx.fillRect(-boss.width / 2 + 12, -boss.height / 2 + 15, 21, 25);
             }
+            ctx.restore();
 
             ctx.fillStyle = "#f1c40f";
             for (let b of bullets) {
