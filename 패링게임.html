@@ -151,6 +151,7 @@
         let bossBullets = [];
         let agendaRain = [];
         let spikes = [];
+        let particles = [];
 
         function initSpikes() {
             spikes = [];
@@ -194,6 +195,19 @@
         });
 
         function die() {
+            // 플레이어 사망 이펙트 (파티클 생성)
+            for (let i = 0; i < 30; i++) {
+                particles.push({
+                    x: player.x + player.width / 2,
+                    y: player.y + player.height / 2,
+                    vx: (Math.random() - 0.5) * 18,
+                    vy: (Math.random() - 0.5) * 18,
+                    size: Math.random() * 8 + 4,
+                    life: 1.0,
+                    color: Math.random() > 0.5 ? "#3498db" : (Math.random() > 0.5 ? "#ffffff" : "#ff3333")
+                });
+            }
+
             deaths++;
             player.x = 100;
             player.y = 340;
@@ -529,6 +543,19 @@
                 }
             }
 
+            // 파티클 업데이트
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.4; // 중력
+                p.life -= 0.02; // 수명 감소
+                p.size *= 0.95; // 크기 감소
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
             if (messageTimer > 0) messageTimer--;
             if (screenShakeTimer > 0) screenShakeTimer--;
 
@@ -673,6 +700,19 @@
                 ctx.shadowColor = bb.color;
                 ctx.beginPath();
                 ctx.arc(bb.x, bb.y, bb.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // 파티클 렌더링
+            for (let p of particles) {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
             }
