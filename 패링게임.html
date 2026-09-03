@@ -112,6 +112,9 @@
             scaleY: 1.0,
             scaleVx: 0,
             scaleVy: 0,
+            isDying: false,
+            isDead: false,
+            deathTimer: 0,
             maxHp: 800,
             hp: 800,
             targetX: 620,
@@ -228,6 +231,10 @@
 
         function resetBoss() {
             boss.hp = boss.maxHp;
+            boss.isDying = false;
+            boss.isDead = false;
+            boss.scaleX = 1.0;
+            boss.scaleY = 1.0;
             boss.patternTimer = 0;
             boss.currentPattern = "NONE";
             bossBullets.length = 0;
@@ -290,14 +297,23 @@
                     b.y < boss.y + boss.height &&
                     b.y + b.height > boss.y
                 ) {
-                    boss.hp -= 2;
-                    screenShakeTimer = 5;
-                    shakeIntensity = 4;
-                    bullets.splice(i, 1);
-                    if (boss.hp <= 0) {
-                        gameMessage = "클리어";
-                        messageTimer = 180;
-                        resetBoss();
+                    if (!boss.isDying && !boss.isDead) {
+                        boss.hp -= 2;
+                        screenShakeTimer = 5;
+                        shakeIntensity = 4;
+                        bullets.splice(i, 1);
+                        if (boss.hp <= 0) {
+                            boss.isDying = true;
+                            boss.deathTimer = 150; // 2.5초간 부들부들
+                            boss.currentPattern = "NONE";
+                            bossBullets.length = 0;
+                            boss.verticalLasers.length = 0;
+                            boss.critiques.length = 0;
+                            boss.hat.state = "IDLE";
+                            agendaRain.length = 0;
+                        }
+                    } else {
+                        bullets.splice(i, 1);
                     }
                     continue;
                 }
@@ -307,8 +323,9 @@
                 }
             }
 
-            boss.moveTimer++;
-            if (boss.moveTimer > 120) {
+            if (!boss.isDying && !boss.isDead) {
+                boss.moveTimer++;
+                if (boss.moveTimer > 120) {
                 boss.moveTimer = 0;
                 boss.targetX = Math.floor(Math.random() * 470) + 250;
                 boss.targetY = Math.floor(Math.random() * 220) + 60;
@@ -542,6 +559,43 @@
                     bossBullets.splice(i, 1);
                 }
             }
+            } else if (boss.isDying) {
+                boss.deathTimer--;
+                
+                // 꾸륵꾸륵 부들부들 효과 (격렬하게 흔들림)
+                boss.scaleX = 1.0 + (Math.random() - 0.5) * 0.8;
+                boss.scaleY = 1.0 + (Math.random() - 0.5) * 0.8;
+                boss.x += (Math.random() - 0.5) * 12;
+                boss.y += (Math.random() - 0.5) * 12;
+                
+                screenShakeTimer = 2;
+                shakeIntensity = 5 + (150 - boss.deathTimer) / 10; // 점점 강해지는 진동
+
+                if (boss.deathTimer <= 0) {
+                    boss.isDying = false;
+                    boss.isDead = true;
+                    
+                    // 거대한 폭발 파티클
+                    for (let i = 0; i < 150; i++) {
+                        particles.push({
+                            x: boss.x + boss.width / 2,
+                            y: boss.y + boss.height / 2,
+                            vx: (Math.random() - 0.5) * 35,
+                            vy: (Math.random() - 0.5) * 35,
+                            size: Math.random() * 20 + 5,
+                            life: 1.0,
+                            color: Math.random() > 0.5 ? "#f1c40f" : (Math.random() > 0.5 ? "#e74c3c" : "#ffffff")
+                        });
+                    }
+                    
+                    gameMessage = "클리어";
+                    messageTimer = 180;
+                }
+            } else if (boss.isDead) {
+                if (messageTimer <= 0) {
+                    resetBoss();
+                }
+            }
 
             // 파티클 업데이트
             for (let i = particles.length - 1; i >= 0; i--) {
@@ -673,9 +727,10 @@
             let eyeX = player.facing > 0 ? player.x + 14 : player.x + 2;
             ctx.fillRect(eyeX, player.y + 4, 6, 6);
 
-            // 보스 렌더링 (스미어 스케일 적용)
-            ctx.save();
-            ctx.translate(boss.x + boss.width / 2, boss.y + boss.height / 2);
+            // 보스 렌더링 (스미어 스케일 적용 및 사망 시 숨김 처리)
+            if (!boss.isDead) {
+                ctx.save();
+                ctx.translate(boss.x + boss.width / 2, boss.y + boss.height / 2);
             ctx.scale(boss.scaleX, boss.scaleY);
 
             if (isImageLoaded) {
@@ -687,6 +742,7 @@
                 ctx.fillRect(-boss.width / 2 + 12, -boss.height / 2 + 15, 21, 25);
             }
             ctx.restore();
+            }
 
             ctx.fillStyle = "#f1c40f";
             for (let b of bullets) {
