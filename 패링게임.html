@@ -45,6 +45,10 @@
 <body>
 
     <h1>I WANNA BE THE JAEHUN - CRITIQUE HELL EDITION</h1>
+    <div style="display: flex; gap: 10px; margin-bottom: 10px; justify-content: center;">
+        <button onclick="location.href='index.html'" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ff3333; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff3333'" onmouseout="this.style.background='#222'">홈으로 돌아가기</button>
+        <button id="pauseBtn" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ffcc00; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ffcc00'; this.style.color='#000'" onmouseout="this.style.background='#222'; this.style.color='#fff'">일시정지 (P)</button>
+    </div>
     <canvas id="gameCanvas" width="800" height="450" tabindex="0"></canvas>
     
     <div class="config-panel">
@@ -59,6 +63,18 @@
 
         canvas.focus();
         window.addEventListener('click', () => canvas.focus());
+
+        let isPaused = false;
+        const pauseBtn = document.getElementById("pauseBtn");
+        
+        pauseBtn.addEventListener("click", () => {
+            isPaused = !isPaused;
+            pauseBtn.innerText = isPaused ? "계속하기 (P)" : "일시정지 (P)";
+            if (!isPaused) {
+                lastTime = performance.now(); // 일시정지 해제 시 델타타임 튐 방지
+            }
+            canvas.focus();
+        });
 
         let deaths = 0;
         let gameMessage = "";
@@ -160,6 +176,10 @@
                     width: 12,
                     height: 4
                 });
+            }
+
+            if (key === 'p') {
+                pauseBtn.click();
             }
         });
 
@@ -645,6 +665,19 @@
                 ctx.restore();
             }
 
+            if (isPaused) {
+                ctx.save();
+                ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#ffcc00";
+                ctx.font = "bold 40px 'Courier New'";
+                ctx.textAlign = "center";
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#ffcc00";
+                ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
+                ctx.restore();
+            }
+
             ctx.restore();
 
             ctx.fillStyle = "#111";
@@ -670,7 +703,10 @@
             if (deltaTime >= fpsInterval) {
                 // 초과된 시간만큼 보정하여 부드럽게 유지
                 lastTime = currentTime - (deltaTime % fpsInterval);
-                update();
+                
+                if (!isPaused) {
+                    update();
+                }
                 draw();
             }
         }
