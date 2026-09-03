@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Wanna Be The Jaehun - CRITIQUE HELL EDITION</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: #ff3333;
+            text-shadow: 0 0 12px rgba(255,51,51,0.7);
+        }
+        canvas {
+            border: 3px solid #ff3333;
+            background-color: #0d0d0d;
+            box-shadow: 0 0 50px rgba(255,51,51,0.4);
+            outline: none;
+        }
+        .config-panel {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #aaa;
+            text-align: center;
+            line-height: 1.4;
+        }
+        span {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>I WANNA BE THE JAEHUN - CRITIQUE HELL EDITION</h1>
+    <canvas id="gameCanvas" width="800" height="450" tabindex="0"></canvas>
+    
+    <div class="config-panel">
+        이동: <span>A / D</span> | 무한 점프: <span>Shift 또는 W</span> | 공격: <span>J</span><br>
+        <span id="statusText" style="color: #ff3333;">사망 횟수: 0 | 점프 모드: 무한 공중 비행 | 현재 패턴: 대기 중 | 보스 체력: 800</span>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const statusText = document.getElementById("statusText");
+
+        canvas.focus();
+        window.addEventListener('click', () => canvas.focus());
+
+        let deaths = 0;
+        let gameMessage = "";
+        let messageTimer = 0;
+        let screenShakeTimer = 0;
+        let shakeIntensity = 4;
+
+        const customBossImg = new Image();
+        customBossImg.src = "images/1.png";
+        let isImageLoaded = false;
+        customBossImg.onload = function() {
+            isImageLoaded = true;
+        };
+
+        const player = {
+            x: 100,
+            y: 340,
+            width: 22,
+            height: 22,
+            vx: 0,
+            vy: 0,
+            speed: 5.0,
+            jumpPower: -9.0,
+            gravity: 0.45,
+            isGrounded: false,
+            facing: 1
+        };
+
+        const boss = {
+            x: 620,
+            y: 180,
+            width: 55,
+            height: 65,
+            maxHp: 800,
+            hp: 800,
+            targetX: 620,
+            targetY: 180,
+            moveTimer: 0,
+            patternTimer: 0,
+            currentPattern: "NONE",
+            verticalLasers: [],
+            critiques: [],
+            hat: {
+                active: false,
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                state: "IDLE",
+                timer: 0,
+                angle: 0,
+                width: 44,
+                height: 22
+            }
+        };
+
+        const critiqueTexts = [
+            "도대체 이 게임의 핵심 차별점이 뭔가요?",
+            "기획서랑 결과물이 완전히 다른데요?",
+            "이거 그냥 기존 게임 리소스 짜깁기 아닌가요?",
+            "타겟 유저층이 누구인지 전혀 안 느껴져요",
+            "개발 일정 관리를 이따위로 하셨어요?",
+            "이 기능을 넣은 학술적/실무적 근거가 있나요?",
+            "비즈니스 모델(BM)이 대책이 없네요",
+            "UI/UX가 너무 불친절해서 쓸 수가 없어요",
+            "이 프로젝트의 최종 기대 효과가 뭡니까?"
+        ];
+
+        let bullets = [];
+        let bossBullets = [];
+        let agendaRain = [];
+        let spikes = [];
+
+        function initSpikes() {
+            spikes = [];
+            for (let i = 40; i < 760; i += 24) {
+                spikes.push({ x: i, y: 380, width: 24, height: 20 });
+            }
+        }
+        initSpikes();
+
+        const keys = {};
+
+        window.addEventListener("keydown", (e) => {
+            const key = e.key.toLowerCase();
+            keys[e.key] = true;
+            keys[key] = true;
+
+            if (key === 'w' || e.key === 'Shift') {
+                player.vy = player.jumpPower;
+                player.isGrounded = false;
+            }
+
+            if (key === 'j') {
+                bullets.push({
+                    x: player.x + (player.facing > 0 ? player.width : 0),
+                    y: player.y + player.height / 2 - 4,
+                    vx: player.facing * 12,
+                    width: 12,
+                    height: 4
+                });
+            }
+        });
+
+        window.addEventListener("keyup", (e) => {
+            const key = e.key.toLowerCase();
+            keys[e.key] = false;
+            keys[key] = false;
+        });
+
+        function die() {
+            deaths++;
+            player.x = 100;
+            player.y = 340;
+            player.vx = 0;
+            player.vy = 0;
+            
+            bossBullets.length = 0;
+            agendaRain.length = 0;
+            bullets.length = 0;
+            boss.verticalLasers.length = 0;
+            boss.critiques.length = 0;
+            boss.hat.state = "IDLE";
+            boss.hat.active = false;
+
+            boss.currentPattern = "NONE";
+            boss.patternTimer = 0;
+        }
+
+        function resetBoss() {
+            boss.hp = boss.maxHp;
+            boss.patternTimer = 0;
+            boss.currentPattern = "NONE";
+            bossBullets.length = 0;
+            agendaRain.length = 0;
+            bullets.length = 0;
+            boss.verticalLasers.length = 0;
+            boss.critiques.length = 0;
+            boss.hat.state = "IDLE";
+            boss.hat.active = false;
+        }
+
+        function update() {
+            if (isNaN(player.x) || isNaN(player.y)) {
+                player.x = 100; player.y = 340; player.vx = 0; player.vy = 0;
+            }
+
+            player.vx = 0;
+            if (keys['a'] || keys['ArrowLeft']) {
+                player.vx = -player.speed;
+                player.facing = -1;
+            }
+            if (keys['d'] || keys['ArrowRight']) {
+                player.vx = player.speed;
+                player.facing = 1;
+            }
+
+            player.x += player.vx;
+            if (player.x < 30) player.x = 30;
+            if (player.x > canvas.width - 50) player.x = canvas.width - 50;
+
+            player.vy += player.gravity;
+            player.y += player.vy;
+
+            let groundLevel = 380 - player.height;
+            if (player.y >= groundLevel) {
+                player.y = groundLevel;
+                player.vy = 0;
+                player.isGrounded = true;
+            }
+
+            for (let s of spikes) {
+                if (
+                    player.x < s.x + s.width &&
+                    player.x + player.width > s.x &&
+                    player.y < s.y + s.height &&
+                    player.y + player.height > s.y
+                ) {
+                    die();
+                    break;
+                }
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.x += b.vx;
+
+                if (
+                    b.x < boss.x + boss.width &&
+                    b.x + b.width > boss.x &&
+                    b.y < boss.y + boss.height &&
+                    b.y + b.height > boss.y
+                ) {
+                    boss.hp -= 2;
+                    screenShakeTimer = 5;
+                    shakeIntensity = 4;
+                    bullets.splice(i, 1);
+                    if (boss.hp <= 0) {
+                        gameMessage = "졸업 승인! 재훈의 크리틱 지옥을 탈출했습니다!";
+                        messageTimer = 180;
+                        resetBoss();
+                    }
+                    continue;
+                }
+
+                if (b.x < 0 || b.x > canvas.width) {
+                    bullets.splice(i, 1);
+                }
+            }
+
+            boss.moveTimer++;
+            if (boss.moveTimer > 120) {
+                boss.moveTimer = 0;
+                boss.targetX = Math.floor(Math.random() * 470) + 250;
+                boss.targetY = Math.floor(Math.random() * 220) + 60;
+            }
+            boss.x += (boss.targetX - boss.x) * 0.04;
+            boss.y += (boss.targetY - boss.y) * 0.04;
+
+            boss.patternTimer++;
+            if (boss.patternTimer > 220 && boss.hat.state === "IDLE") {
+                boss.patternTimer = 0;
+
+                const patterns = ["BULLET_HELL", "VERTICAL_LASER", "CRITIQUE_ATTACK", "HAT_THROW", "AGENDA_RAIN"];
+                boss.currentPattern = patterns[Math.floor(Math.random() * patterns.length)];
+
+                if (boss.currentPattern === "HAT_THROW") {
+                    boss.hat.state = "THROWING";
+                    boss.hat.x = boss.x;
+                    boss.hat.y = boss.y + 10;
+                    boss.hat.vx = -7.5;
+                    boss.hat.vy = 0;
+                    boss.hat.timer = 0;
+                }
+            }
+
+            if (boss.currentPattern === "BULLET_HELL") {
+                if (boss.patternTimer % 25 === 0) {
+                    let count = 12;
+                    let offset = (boss.patternTimer % 50 === 0) ? 0.2 : 0;
+                    for (let i = 0; i < count; i++) {
+                        let angle = (Math.PI * 2 / count) * i + offset;
+                        bossBullets.push({
+                            x: boss.x + boss.width / 2,
+                            y: boss.y + boss.height / 2,
+                            vx: Math.cos(angle) * 4.5,
+                            vy: Math.sin(angle) * 4.5,
+                            radius: 6,
+                            color: i % 2 === 0 ? "#ff3333" : "#ffcc00"
+                        });
+                    }
+                }
+            }
+
+            if (boss.currentPattern === "VERTICAL_LASER") {
+                if (boss.patternTimer % 18 === 0 && boss.verticalLasers.length < 6) {
+                    boss.verticalLasers.push({
+                        x: Math.floor(Math.random() * 700) + 40,
+                        width: 36,
+                        chargeTimer: 35,
+                        durationTimer: 25,
+                        active: false
+                    });
+                }
+            }
+            
+            for (let i = boss.verticalLasers.length - 1; i >= 0; i--) {
+                let vl = boss.verticalLasers[i];
+                if (vl.chargeTimer > 0) {
+                    vl.chargeTimer--;
+                    if (vl.chargeTimer === 0) {
+                        vl.active = true;
+                        screenShakeTimer = 18;
+                        shakeIntensity = 10;
+                    }
+                } else if (vl.active) {
+                    vl.durationTimer--;
+                    
+                    if (
+                        player.x < vl.x + vl.width &&
+                        player.x + player.width > vl.x
+                    ) {
+                        die();
+                        break;
+                    }
+
+                    if (vl.durationTimer <= 0) {
+                        boss.verticalLasers.splice(i, 1);
+                    }
+                }
+            }
+
+            if (boss.currentPattern === "CRITIQUE_ATTACK") {
+                if (boss.patternTimer % 35 === 0 && boss.critiques.length < 5) {
+                    let randomText = critiqueTexts[Math.floor(Math.random() * critiqueTexts.length)];
+                    let startX = boss.x + boss.width / 2;
+                    let startY = boss.y + boss.height / 2;
+                    let targetX = player.x + player.width / 2;
+                    let targetY = player.y + player.height / 2;
+                    let angle = Math.atan2(targetY - startY, targetX - startX);
+                    
+                    boss.critiques.push({
+                        x: startX,
+                        y: startY,
+                        vx: Math.cos(angle) * 7.5,
+                        vy: Math.sin(angle) * 7.5,
+                        text: randomText,
+                        fontSize: 14
+                    });
+                }
+            }
+
+            for (let i = boss.critiques.length - 1; i >= 0; i--) {
+                let c = boss.critiques[i];
+                c.x += c.vx;
+                c.y += c.vy;
+
+                let textWidth = c.text.length * 11;
+                if (
+                    player.x < c.x + textWidth &&
+                    player.x + player.width > c.x &&
+                    player.y < c.y &&
+                    player.y + player.height > c.y - c.fontSize
+                ) {
+                    die();
+                    break;
+                }
+
+                if (c.x < 0 || c.x > canvas.width || c.y < 0 || c.y > canvas.height) {
+                    boss.critiques.splice(i, 1);
+                }
+            }
+
+            if (boss.currentPattern === "HAT_THROW") {
+                let hat = boss.hat;
+                hat.angle += 0.25;
+
+                if (hat.state === "THROWING") {
+                    hat.x += hat.vx;
+                    if (hat.x < 180) {
+                        hat.state = "SPINNING";
+                        hat.timer = 0;
+                    }
+                } else if (hat.state === "SPINNING") {
+                    hat.timer++;
+                    if (hat.timer % 18 === 0) {
+                        let count = 8;
+                        for (let i = 0; i < count; i++) {
+                            let angle = (Math.PI * 2 / count) * i + (hat.timer * 0.1);
+                            bossBullets.push({
+                                x: hat.x,
+                                y: hat.y,
+                                vx: Math.cos(angle) * 3.8,
+                                vy: Math.sin(angle) * 3.8,
+                                radius: 5,
+                                color: "#9b59b6"
+                            });
+                        }
+                    }
+                    if (hat.timer > 110) {
+                        hat.state = "RETURNING";
+                    }
+                } else if (hat.state === "RETURNING") {
+                    let dx = (boss.x + boss.width / 2) - hat.x;
+                    let dy = (boss.y + 10) - hat.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 12) {
+                        hat.state = "IDLE";
+                        boss.currentPattern = "NONE";
+                        boss.patternTimer = 0;
+                    } else {
+                        hat.x += (dx / dist) * 10.0;
+                        hat.y += (dy / dist) * 10.0;
+                    }
+                }
+
+                let hatDistX = (player.x + player.width / 2) - hat.x;
+                let hatDistY = (player.y + player.height / 2) - hat.y;
+                if (Math.sqrt(hatDistX * hatDistX + hatDistY * hatDistY) < 20 && hat.state !== "IDLE") {
+                    die();
+                }
+            }
+
+            if (boss.currentPattern === "AGENDA_RAIN") {
+                if (Math.random() < 0.25) {
+                    agendaRain.push({
+                        x: Math.random() * (canvas.width - 100) + 50,
+                        y: -20,
+                        vy: Math.random() * 3.0 + 3.0,
+                        size: Math.floor(Math.random() * 8) + 14,
+                        text: "아젠다"
+                    });
+                }
+            }
+
+            for (let i = agendaRain.length - 1; i >= 0; i--) {
+                let ag = agendaRain[i];
+                ag.y += ag.vy;
+
+                if (
+                    player.x < ag.x + ag.size * 2.5 &&
+                    player.x + player.width > ag.x &&
+                    player.y < ag.y &&
+                    player.y + player.height > ag.y - ag.size
+                ) {
+                    die();
+                    break;
+                }
+
+                if (ag.y > 380) {
+                    agendaRain.splice(i, 1);
+                }
+            }
+
+            for (let i = bossBullets.length - 1; i >= 0; i--) {
+                let bb = bossBullets[i];
+                bb.x += bb.vx;
+                bb.y += bb.vy;
+
+                let distX = (player.x + player.width / 2) - bb.x;
+                let distY = (player.y + player.height / 2) - bb.y;
+                let distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < player.width / 2 + bb.radius) {
+                    die();
+                    break;
+                }
+
+                if (bb.x < 0 || bb.x > canvas.width || bb.y < 0 || bb.y > canvas.height) {
+                    bossBullets.splice(i, 1);
+                }
+            }
+
+            if (messageTimer > 0) messageTimer--;
+            if (screenShakeTimer > 0) screenShakeTimer--;
+
+            let patternNameMap = {
+                "NONE": "대기 중",
+                "BULLET_HELL": "탄막 세례 폭격",
+                "VERTICAL_LASER": "⚡ [땅울림] 파바방 세로 빛줄기 폭격!",
+                "CRITIQUE_ATTACK": "💬 뼈 때리는 크리틱 조준 슈슛 발사!",
+                "HAT_THROW": "🎩 [오디세이] 중절모 투척 & 탄막 회전 공격!",
+                "AGENDA_RAIN": "하늘에서 아젠다 폭우"
+            };
+            statusText.innerText = `사망 횟수: ${deaths} | 점프 모드: 무한 공중 비행 | 현재 패턴: ${patternNameMap[boss.currentPattern]} | 재훈 보스 체력: ${Math.max(0, boss.hp)} / ${boss.maxHp}`;
+        }
+
+        function draw() {
+            ctx.save();
+
+            if (screenShakeTimer > 0) {
+                let shakeX = (Math.random() - 0.5) * shakeIntensity;
+                let shakeY = (Math.random() - 0.5) * shakeIntensity;
+                ctx.translate(shakeX, shakeY);
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = "#181818";
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+
+            ctx.fillStyle = "#222";
+            ctx.fillRect(0, 380, canvas.width, 70);
+            ctx.strokeStyle = "#ff3333";
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0, 380); ctx.lineTo(canvas.width, 380); ctx.stroke();
+
+            ctx.fillStyle = "#ff3333";
+            for (let s of spikes) {
+                ctx.beginPath();
+                ctx.moveTo(s.x, s.y + s.height);
+                ctx.lineTo(s.x + s.width / 2, s.y);
+                ctx.lineTo(s.x + s.width, s.y + s.height);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            for (let ag of agendaRain) {
+                ctx.save();
+                ctx.font = `bold ${ag.size}px 'Courier New'`;
+                ctx.fillStyle = "#ffcc00";
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#ff3333";
+                ctx.fillText(ag.text, ag.x, ag.y);
+                ctx.restore();
+            }
+
+            for (let vl of boss.verticalLasers) {
+                if (vl.chargeTimer > 0) {
+                    ctx.strokeStyle = "rgba(255, 51, 51, 0.8)";
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([8, 8]);
+                    ctx.beginPath();
+                    ctx.moveTo(vl.x + vl.width / 2, 0);
+                    ctx.lineTo(vl.x + vl.width / 2, 380);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                } else if (vl.active) {
+                    ctx.save();
+                    ctx.shadowBlur = 35;
+                    ctx.shadowColor = "#ff3333";
+
+                    ctx.fillStyle = "rgba(255, 51, 51, 0.4)";
+                    ctx.fillRect(vl.x - 12, 0, vl.width + 24, 380);
+
+                    ctx.fillStyle = "rgba(255, 51, 51, 0.9)";
+                    ctx.fillRect(vl.x, 0, vl.width, 380);
+
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(vl.x + vl.width / 2 - 4, 0, 8, 380);
+                    
+                    ctx.restore();
+                }
+            }
+
+            for (let c of boss.critiques) {
+                ctx.save();
+                ctx.font = `bold ${c.fontSize}px 'Courier New'`;
+                ctx.fillStyle = "#ff3366";
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = "#ff0000";
+                ctx.fillText(c.text, c.x, c.y);
+                ctx.restore();
+            }
+
+            if (boss.hat.state !== "IDLE") {
+                let hat = boss.hat;
+                ctx.save();
+                ctx.translate(hat.x, hat.y);
+                ctx.rotate(hat.angle);
+                
+                ctx.fillStyle = "#2c3e50";
+                ctx.fillRect(-22, -6, 44, 12);
+                ctx.fillStyle = "#34495e";
+                ctx.fillRect(-14, -18, 28, 14);
+                ctx.fillStyle = "#e74c3c";
+                ctx.fillRect(-14, -8, 28, 4);
+                
+                ctx.restore();
+            }
+
+            ctx.fillStyle = "#3498db";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillStyle = "#fff";
+            let eyeX = player.facing > 0 ? player.x + 14 : player.x + 2;
+            ctx.fillRect(eyeX, player.y + 4, 6, 6);
+
+            if (isImageLoaded) {
+                ctx.drawImage(customBossImg, boss.x, boss.y, boss.width, boss.height);
+            } else {
+                ctx.fillStyle = "#e74c3c";
+                ctx.fillRect(boss.x, boss.y, boss.width, boss.height);
+                ctx.fillStyle = "#f1c40f";
+                ctx.fillRect(boss.x + 12, boss.y + 15, 21, 25);
+            }
+
+            ctx.fillStyle = "#f1c40f";
+            for (let b of bullets) {
+                ctx.fillRect(b.x, b.y, b.width, b.height);
+            }
+
+            for (let bb of bossBullets) {
+                ctx.save();
+                ctx.fillStyle = bb.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = bb.color;
+                ctx.beginPath();
+                ctx.arc(bb.x, bb.y, bb.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (messageTimer > 0) {
+                ctx.save();
+                ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00ffcc";
+                ctx.font = "bold 22px 'Courier New'";
+                ctx.textAlign = "center";
+                ctx.fillText(gameMessage, canvas.width / 2, canvas.height / 2);
+                ctx.restore();
+            }
+
+            ctx.restore();
+
+            ctx.fillStyle = "#111";
+            ctx.fillRect(150, 15, 500, 14);
+            let hpRatio = Math.max(0, boss.hp) / boss.maxHp;
+            ctx.fillStyle = "#ff3333";
+            ctx.fillRect(152, 17, 496 * hpRatio, 10);
+            
+            ctx.fillStyle = "#fff";
+            ctx.font = "12px 'Courier New'";
+            ctx.fillText("I WANNA BE THE JAEHUN - CRITIQUE HELL", 220, 11);
+        }
+
+        let lastTime = performance.now();
+        const fpsInterval = 1000 / 60; // 60 FPS 제한
+
+        function runGame(currentTime) {
+            requestAnimationFrame(runGame);
+            
+            const deltaTime = currentTime - lastTime;
+            
+            // 60FPS(약 16.67ms) 이상 시간이 지났을 때만 화면을 업데이트합니다
+            if (deltaTime >= fpsInterval) {
+                // 초과된 시간만큼 보정하여 부드럽게 유지
+                lastTime = currentTime - (deltaTime % fpsInterval);
+                update();
+                draw();
+            }
+        }
+
+        requestAnimationFrame(runGame);
+    </script>
+</body>
+</html>
