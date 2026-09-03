@@ -48,6 +48,7 @@
     <div style="display: flex; gap: 10px; margin-bottom: 10px; justify-content: center;">
         <button onclick="location.href='index.html'" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ff3333; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff3333'" onmouseout="this.style.background='#222'">홈으로 돌아가기</button>
         <button id="pauseBtn" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ffcc00; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ffcc00'; this.style.color='#000'" onmouseout="this.style.background='#222'; this.style.color='#fff'">일시정지 (P)</button>
+        <button id="devClearBtn" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #3498db; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#3498db'; this.style.color='#fff'" onmouseout="this.style.background='#222'; this.style.color='#fff'">개발자 클리어</button>
     </div>
     <canvas id="gameCanvas" width="800" height="450" tabindex="0"></canvas>
     
@@ -72,6 +73,25 @@
             pauseBtn.innerText = isPaused ? "계속하기 (P)" : "일시정지 (P)";
             if (!isPaused) {
                 lastTime = performance.now(); // 일시정지 해제 시 델타타임 튐 방지
+            }
+            canvas.focus();
+        });
+
+        document.getElementById("devClearBtn").addEventListener("click", () => {
+            if (!boss.isDying && !boss.isDead) {
+                boss.hp = 0;
+                boss.isDying = true;
+                boss.deathTimer = 150; // 2.5초 부들부들
+                boss.currentPattern = "NONE";
+                bossBullets.length = 0;
+                boss.verticalLasers.length = 0;
+                boss.critiques.length = 0;
+                boss.hat.state = "IDLE";
+                agendaRain.length = 0;
+                
+                if (isPaused) {
+                    pauseBtn.click(); // 일시정지 상태면 해제
+                }
             }
             canvas.focus();
         });
