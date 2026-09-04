@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,18 +18,21 @@
             height: 100vh;
             overflow: hidden;
         }
+
         h1 {
             font-size: 1.2rem;
             margin-bottom: 4px;
             color: #ff3333;
-            text-shadow: 0 0 12px rgba(255,51,51,0.7);
+            text-shadow: 0 0 12px rgba(255, 51, 51, 0.7);
         }
+
         canvas {
             border: 3px solid #ff3333;
             background-color: #0d0d0d;
-            box-shadow: 0 0 50px rgba(255,51,51,0.4);
+            box-shadow: 0 0 50px rgba(255, 51, 51, 0.4);
             outline: none;
         }
+
         .config-panel {
             margin-top: 8px;
             font-size: 0.8rem;
@@ -36,24 +40,51 @@
             text-align: center;
             line-height: 1.4;
         }
+
         span {
             color: #fff;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body>
 
     <h1>I WANNA BE THE JAEHUN - CRITIQUE HELL EDITION</h1>
     <div style="display: flex; gap: 10px; margin-bottom: 10px; justify-content: center;">
-        <button onclick="location.href='index.html'" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ff3333; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ff3333'" onmouseout="this.style.background='#222'">홈으로 돌아가기</button>
-        <button id="pauseBtn" style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ffcc00; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;" onmouseover="this.style.background='#ffcc00'; this.style.color='#000'" onmouseout="this.style.background='#222'; this.style.color='#fff'">일시정지 (P)</button>
+        <button onclick="location.href='index.html'"
+            style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ff3333; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;"
+            onmouseover="this.style.background='#ff3333'" onmouseout="this.style.background='#222'">홈으로 돌아가기</button>
+        <button id="pauseBtn"
+            style="padding: 8px 16px; background: #222; color: #fff; border: 1px solid #ffcc00; cursor: pointer; font-family: 'Courier New', Courier, monospace; font-weight: bold; transition: all 0.2s;"
+            onmouseover="this.style.background='#ffcc00'; this.style.color='#000'"
+            onmouseout="this.style.background='#222'; this.style.color='#fff'">일시정지 (P)</button>
     </div>
     <div style="position: relative;">
         <canvas id="gameCanvas" width="800" height="450" tabindex="0"></canvas>
-        <button id="replayBtn" style="display: none; position: absolute; left: 50%; top: 65%; transform: translate(-50%, -50%); padding: 12px 24px; background: #e74c3c; color: #fff; border: 2px solid #fff; border-radius: 8px; font-size: 24px; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; transition: 0.2s; z-index: 10;" onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">🔄 다시하기</button>
+        <button id="replayBtn"
+            style="display: none; position: absolute; left: 50%; top: 65%; transform: translate(-50%, -50%); padding: 12px 24px; background: #e74c3c; color: #fff; border: 2px solid #fff; border-radius: 8px; font-size: 24px; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; transition: 0.2s; z-index: 10;"
+            onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">🔄 다시하기</button>
+
+        <!-- 스토리 스크린 추가 -->
+        <div id="storyScreen"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; color: #fff; text-align: center; padding: 20px; box-sizing: border-box;">
+            <h2 style="color: #ff3333; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,51,51,0.8);">[ 프롤로그 ]</h2>
+            <p
+                style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 30px; font-family: 'Courier New', Courier, monospace;">
+                후... 오늘인가.. 디아페 기획발표 날이...<br>
+                우리 모두 열심히 준비했으니 교수님들도 좋아해주실거야...<br><br>
+                하지만 당신의 앞에는 자비 없는 <strong>'재훈'</strong> 교수님이 기다리고 있습니다.<br>
+                귀를 닫고 내뱉는 무수한 <strong>크리틱 폭격</strong>을 피하고,<br>
+                반박(공격)을 통해 교수님을 쓰러뜨려 무사히 프로젝트를 통과시키세요!
+            </p>
+            <button id="startBtn"
+                style="padding: 12px 24px; background: #222; color: #fff; border: 2px solid #ffcc00; border-radius: 8px; font-size: 20px; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; transition: 0.2s;"
+                onmouseover="this.style.background='#ffcc00'; this.style.color='#000'"
+                onmouseout="this.style.background='#222'; this.style.color='#fff'">🎮 게임 시작 (Enter)</button>
+        </div>
     </div>
-    
+
     <div class="config-panel">
         이동: <span>A / D</span> | 무한 점프: <span>Shift 또는 W</span> | 공격: <span>J</span><br>
         <span id="statusText" style="color: #ff3333;">사망 횟수: 0 | 점프 모드: 무한 공중 비행 | 현재 패턴: 대기 중 | 보스 체력: 800</span>
@@ -64,12 +95,23 @@
         const ctx = canvas.getContext("2d");
         const statusText = document.getElementById("statusText");
 
+        let isStoryMode = true; // 스토리 모드 상태 변수
+
+        document.getElementById("startBtn").addEventListener("click", () => {
+            isStoryMode = false;
+            document.getElementById("storyScreen").style.display = "none";
+            lastTime = performance.now(); // 델타타임 튐 방지
+            canvas.focus();
+        });
+
         canvas.focus();
-        window.addEventListener('click', () => canvas.focus());
+        window.addEventListener('click', () => {
+            if (!isStoryMode) canvas.focus();
+        });
 
         let isPaused = false;
         const pauseBtn = document.getElementById("pauseBtn");
-        
+
         pauseBtn.addEventListener("click", () => {
             isPaused = !isPaused;
             pauseBtn.innerText = isPaused ? "계속하기 (P)" : "일시정지 (P)";
@@ -98,7 +140,7 @@
         const customBossImg = new Image();
         customBossImg.src = "images/1.png";
         let isImageLoaded = false;
-        customBossImg.onload = function() {
+        customBossImg.onload = function () {
             isImageLoaded = true;
         };
 
@@ -109,9 +151,9 @@
             height: 22,
             vx: 0,
             vy: 0,
-            speed: 5.0,
-            jumpPower: -9.0,
-            gravity: 0.45,
+            speed: 3.5,
+            jumpPower: -7.5,
+            gravity: 0.35,
             isGrounded: false,
             facing: 1
         };
@@ -135,6 +177,7 @@
             moveTimer: 0,
             patternTimer: 0,
             currentPattern: "NONE",
+            patternCount: 0,
             verticalLasers: [],
             critiques: [],
             hat: {
@@ -166,20 +209,41 @@
         let bullets = [];
         let bossBullets = [];
         let agendaRain = [];
-        let spikes = [];
         let particles = [];
+        let platforms = [];
+        let scrollSpeed = 2.0;
+        let platformTimer = 0;
 
-        function initSpikes() {
-            spikes = [];
-            for (let i = 40; i < 760; i += 24) {
-                spikes.push({ x: i, y: 380, width: 24, height: 20 });
+        function initPlatforms() {
+            platforms = [];
+            for (let i = 0; i < 6; i++) {
+                platforms.push({
+                    x: Math.random() * (800 - 120) + 20,
+                    y: 450 - i * 80,
+                    width: Math.random() * 80 + 60,
+                    height: 15
+                });
             }
+            platforms.push({
+                x: player.x - 20,
+                y: player.y + player.height,
+                width: 100,
+                height: 15
+            });
+            platformTimer = 0;
         }
-        initSpikes();
+        initPlatforms();
 
         const keys = {};
 
         window.addEventListener("keydown", (e) => {
+            if (isStoryMode) {
+                if (e.key === 'Enter') {
+                    document.getElementById("startBtn").click();
+                }
+                return;
+            }
+
             const key = e.key.toLowerCase();
             keys[e.key] = true;
             keys[key] = true;
@@ -193,7 +257,7 @@
                 bullets.push({
                     x: player.x + (player.facing > 0 ? player.width : 0),
                     y: player.y + player.height / 2 - 4,
-                    vx: player.facing * 12,
+                    vx: player.facing * 9,
                     width: 12,
                     height: 4
                 });
@@ -216,7 +280,7 @@
                     boss.critiques.length = 0;
                     boss.hat.state = "IDLE";
                     agendaRain.length = 0;
-                    
+
                     if (isPaused) pauseBtn.click();
                 }
             }
@@ -247,7 +311,7 @@
             player.y = 340;
             player.vx = 0;
             player.vy = 0;
-            
+
             bossBullets.length = 0;
             agendaRain.length = 0;
             bullets.length = 0;
@@ -255,9 +319,12 @@
             boss.critiques.length = 0;
             boss.hat.state = "IDLE";
             boss.hat.active = false;
+            
+            initPlatforms();
 
             boss.currentPattern = "NONE";
             boss.patternTimer = 0;
+            boss.patternCount = 0;
         }
 
         function resetBoss() {
@@ -267,6 +334,7 @@
             boss.scaleX = 1.0;
             boss.scaleY = 1.0;
             boss.patternTimer = 0;
+            boss.patternCount = 0;
             boss.currentPattern = "NONE";
             bossBullets.length = 0;
             agendaRain.length = 0;
@@ -275,6 +343,7 @@
             boss.critiques.length = 0;
             boss.hat.state = "IDLE";
             boss.hat.active = false;
+            initPlatforms();
         }
 
         function update() {
@@ -296,26 +365,51 @@
             if (player.x < 30) player.x = 30;
             if (player.x > canvas.width - 50) player.x = canvas.width - 50;
 
-            player.vy += player.gravity;
-            player.y += player.vy;
-
-            let groundLevel = 380 - player.height;
-            if (player.y >= groundLevel) {
-                player.y = groundLevel;
-                player.vy = 0;
-                player.isGrounded = true;
+            platformTimer++;
+            if (platformTimer > 40) {
+                platformTimer = 0;
+                platforms.push({
+                    x: Math.random() * (canvas.width - 120) + 20,
+                    y: -20,
+                    width: Math.random() * 80 + 60,
+                    height: 15
+                });
+            }
+            for (let i = platforms.length - 1; i >= 0; i--) {
+                let p = platforms[i];
+                p.y += scrollSpeed;
+                if (p.y > canvas.height) {
+                    platforms.splice(i, 1);
+                }
             }
 
-            for (let s of spikes) {
-                if (
-                    player.x < s.x + s.width &&
-                    player.x + player.width > s.x &&
-                    player.y < s.y + s.height &&
-                    player.y + player.height > s.y
-                ) {
-                    die();
-                    break;
+            player.vy += player.gravity;
+            player.y += player.vy;
+            player.isGrounded = false;
+
+            if (player.vy > 0) {
+                for (let p of platforms) {
+                    if (
+                        player.x + player.width > p.x &&
+                        player.x < p.x + p.width &&
+                        player.y + player.height >= p.y &&
+                        player.y + player.height <= p.y + player.vy + 12
+                    ) {
+                        player.y = p.y - player.height;
+                        player.vy = 0;
+                        player.isGrounded = true;
+                        break;
+                    }
                 }
+            }
+
+            if (player.isGrounded) {
+                player.y += scrollSpeed;
+            }
+
+            if (player.y > canvas.height + 20) {
+                die();
+                return; // 사망 시 더 이상 이번 프레임의 update 로직을 수행하지 않음
             }
 
             for (let i = bullets.length - 1; i >= 0; i--) {
@@ -329,7 +423,7 @@
                     b.y + b.height > boss.y
                 ) {
                     if (!boss.isDying && !boss.isDead) {
-                        boss.hp -= 2;
+                        boss.hp -= 10;
                         screenShakeTimer = 5;
                         shakeIntensity = 4;
                         bullets.splice(i, 1);
@@ -355,257 +449,300 @@
             }
 
             if (!boss.isDying && !boss.isDead) {
-                boss.moveTimer++;
-                if (boss.moveTimer > 120) {
-                boss.moveTimer = 0;
-                boss.targetX = Math.floor(Math.random() * 470) + 250;
-                boss.targetY = Math.floor(Math.random() * 220) + 60;
-            }
-            let bvx = (boss.targetX - boss.x) * 0.04;
-            let bvy = (boss.targetY - boss.y) * 0.04;
-            boss.x += bvx;
-            boss.y += bvy;
-
-            // 스미어(Squash & Stretch) - 쫀득한 물리 효과
-            let targetScaleX = (1.0 + Math.abs(bvx) * 0.03) / (1.0 + Math.abs(bvy) * 0.03);
-            let targetScaleY = (1.0 + Math.abs(bvy) * 0.03) / (1.0 + Math.abs(bvx) * 0.03);
-            
-            boss.scaleVx += (targetScaleX - boss.scaleX) * 0.3; // 스프링 강도
-            boss.scaleVy += (targetScaleY - boss.scaleY) * 0.3;
-            boss.scaleVx *= 0.65; // 마찰(감쇠)력
-            boss.scaleVy *= 0.65;
-            boss.scaleX += boss.scaleVx;
-            boss.scaleY += boss.scaleVy;
-
-            boss.patternTimer++;
-            if (boss.patternTimer > 220 && boss.hat.state === "IDLE") {
-                boss.patternTimer = 0;
-
-                const patterns = ["BULLET_HELL", "VERTICAL_LASER", "CRITIQUE_ATTACK", "HAT_THROW", "AGENDA_RAIN"];
-                boss.currentPattern = patterns[Math.floor(Math.random() * patterns.length)];
-
-                if (boss.currentPattern === "HAT_THROW") {
-                    boss.hat.state = "THROWING";
-                    boss.hat.x = boss.x;
-                    boss.hat.y = boss.y + 10;
-                    boss.hat.vx = -7.5;
-                    boss.hat.vy = 0;
-                    boss.hat.timer = 0;
+                if (boss.currentPattern === "REST") {
+                    boss.targetX = 620;
+                    boss.targetY = 280; // 휴식 시 지정된 위치(아래쪽)로 고정
+                } else {
+                    boss.moveTimer++;
+                    if (boss.moveTimer > 120) {
+                        boss.moveTimer = 0;
+                        boss.targetX = Math.floor(Math.random() * 470) + 250;
+                        boss.targetY = Math.floor(Math.random() * 220) + 60;
+                    }
                 }
-            }
 
-            if (boss.currentPattern === "BULLET_HELL") {
-                if (boss.patternTimer % 25 === 0) {
-                    let count = 12;
-                    let offset = (boss.patternTimer % 50 === 0) ? 0.2 : 0;
-                    for (let i = 0; i < count; i++) {
-                        let angle = (Math.PI * 2 / count) * i + offset;
-                        bossBullets.push({
-                            x: boss.x + boss.width / 2,
-                            y: boss.y + boss.height / 2,
-                            vx: Math.cos(angle) * 4.5,
-                            vy: Math.sin(angle) * 4.5,
-                            radius: 6,
-                            color: i % 2 === 0 ? "#ff3333" : "#ffcc00"
+                let bvx = (boss.targetX - boss.x) * 0.03;
+                let bvy = (boss.targetY - boss.y) * 0.03;
+                boss.x += bvx;
+                boss.y += bvy;
+
+                // 스미어(Squash & Stretch) - 쫀득한 물리 효과
+                let targetScaleX = (1.0 + Math.abs(bvx) * 0.03) / (1.0 + Math.abs(bvy) * 0.03);
+                let targetScaleY = (1.0 + Math.abs(bvy) * 0.03) / (1.0 + Math.abs(bvx) * 0.03);
+
+                if (boss.currentPattern === "REST") {
+                    // 헐떡이는 숨쉬기 모션
+                    if (boss.patternTimer % 60 < 30) {
+                        targetScaleX = 1.05;
+                        targetScaleY = 0.9;
+                    } else {
+                        targetScaleX = 0.95;
+                        targetScaleY = 1.05;
+                    }
+                }
+
+                boss.scaleVx += (targetScaleX - boss.scaleX) * 0.3; // 스프링 강도
+                boss.scaleVy += (targetScaleY - boss.scaleY) * 0.3;
+                boss.scaleVx *= 0.65; // 마찰(감쇠)력
+                boss.scaleVy *= 0.65;
+                boss.scaleX += boss.scaleVx;
+                boss.scaleY += boss.scaleVy;
+
+                boss.patternTimer++;
+                let nextPatternThreshold = boss.currentPattern === "REST" ? 300 : 220; // 휴식은 5초(300프레임), 일반 패턴은 약 3.6초(220프레임)
+
+                if (boss.patternTimer > nextPatternThreshold && boss.hat.state === "IDLE") {
+                    boss.patternTimer = 0;
+
+                    if (boss.currentPattern !== "NONE" && boss.currentPattern !== "REST") {
+                        boss.patternCount++;
+                    }
+
+                    if (boss.patternCount >= 3) {
+                        boss.currentPattern = "REST";
+                        boss.patternCount = 0;
+                        // 남은 패턴 투사체들을 파티클로 변환하며 자연스럽게 소멸시킴
+                        for (let bb of bossBullets) {
+                            for (let i = 0; i < 3; i++) particles.push({ x: bb.x, y: bb.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, size: Math.random() * 3 + 2, life: 1.0, color: bb.color });
+                        }
+                        for (let ag of agendaRain) {
+                            for (let i = 0; i < 5; i++) particles.push({ x: ag.x + ag.size, y: ag.y - ag.size / 2, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, size: Math.random() * 4 + 2, life: 1.0, color: "#ffcc00" });
+                        }
+                        for (let c of boss.critiques) {
+                            for (let i = 0; i < 5; i++) particles.push({ x: c.x, y: c.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, size: Math.random() * 4 + 2, life: 1.0, color: "#ff3366" });
+                        }
+
+                        bossBullets.length = 0;
+                        agendaRain.length = 0;
+                        boss.verticalLasers.length = 0;
+                        boss.critiques.length = 0;
+                    } else {
+                        const patterns = ["BULLET_HELL", "VERTICAL_LASER", "CRITIQUE_ATTACK", "HAT_THROW", "AGENDA_RAIN"];
+                        boss.currentPattern = patterns[Math.floor(Math.random() * patterns.length)];
+
+                        if (boss.currentPattern === "HAT_THROW") {
+                            boss.hat.state = "THROWING";
+                            boss.hat.x = boss.x;
+                            boss.hat.y = boss.y + 10;
+                            boss.hat.vx = -5.5;
+                            boss.hat.vy = 0;
+                            boss.hat.timer = 0;
+                        }
+                    }
+                }
+
+                if (boss.currentPattern === "BULLET_HELL") {
+                    if (boss.patternTimer % 25 === 0) {
+                        let count = 12;
+                        let offset = (boss.patternTimer % 50 === 0) ? 0.2 : 0;
+                        for (let i = 0; i < count; i++) {
+                            let angle = (Math.PI * 2 / count) * i + offset;
+                            bossBullets.push({
+                                x: boss.x + boss.width / 2,
+                                y: boss.y + boss.height / 2,
+                                vx: Math.cos(angle) * 3.5,
+                                vy: Math.sin(angle) * 3.5,
+                                radius: 6,
+                                color: i % 2 === 0 ? "#ff3333" : "#ffcc00"
+                            });
+                        }
+                    }
+                }
+
+                if (boss.currentPattern === "VERTICAL_LASER") {
+                    if (boss.patternTimer % 18 === 0 && boss.verticalLasers.length < 6) {
+                        boss.verticalLasers.push({
+                            x: Math.floor(Math.random() * 700) + 40,
+                            width: 36,
+                            chargeTimer: 35,
+                            durationTimer: 25,
+                            active: false
                         });
                     }
                 }
-            }
 
-            if (boss.currentPattern === "VERTICAL_LASER") {
-                if (boss.patternTimer % 18 === 0 && boss.verticalLasers.length < 6) {
-                    boss.verticalLasers.push({
-                        x: Math.floor(Math.random() * 700) + 40,
-                        width: 36,
-                        chargeTimer: 35,
-                        durationTimer: 25,
-                        active: false
-                    });
-                }
-            }
-            
-            for (let i = boss.verticalLasers.length - 1; i >= 0; i--) {
-                let vl = boss.verticalLasers[i];
-                if (vl.chargeTimer > 0) {
-                    vl.chargeTimer--;
-                    if (vl.chargeTimer === 0) {
-                        vl.active = true;
-                        screenShakeTimer = 18;
-                        shakeIntensity = 10;
+                for (let i = boss.verticalLasers.length - 1; i >= 0; i--) {
+                    let vl = boss.verticalLasers[i];
+                    if (vl.chargeTimer > 0) {
+                        vl.chargeTimer--;
+                        if (vl.chargeTimer === 0) {
+                            vl.active = true;
+                            screenShakeTimer = 18;
+                            shakeIntensity = 10;
+                        }
+                    } else if (vl.active) {
+                        vl.durationTimer--;
+
+                        if (
+                            player.x < vl.x + vl.width &&
+                            player.x + player.width > vl.x
+                        ) {
+                            die();
+                            break;
+                        }
+
+                        if (vl.durationTimer <= 0) {
+                            boss.verticalLasers.splice(i, 1);
+                        }
                     }
-                } else if (vl.active) {
-                    vl.durationTimer--;
-                    
+                }
+
+                if (boss.currentPattern === "CRITIQUE_ATTACK") {
+                    if (boss.patternTimer % 35 === 0 && boss.critiques.length < 5) {
+                        let randomText = critiqueTexts[Math.floor(Math.random() * critiqueTexts.length)];
+                        let startX = boss.x + boss.width / 2;
+                        let startY = boss.y + boss.height / 2;
+                        let targetX = player.x + player.width / 2;
+                        let targetY = player.y + player.height / 2;
+                        let angle = Math.atan2(targetY - startY, targetX - startX);
+
+                        boss.critiques.push({
+                            x: startX,
+                            y: startY,
+                            vx: Math.cos(angle) * 5.5,
+                            vy: Math.sin(angle) * 5.5,
+                            text: randomText,
+                            fontSize: 14
+                        });
+                    }
+                }
+
+                for (let i = boss.critiques.length - 1; i >= 0; i--) {
+                    let c = boss.critiques[i];
+                    c.x += c.vx;
+                    c.y += c.vy;
+
+                    let textWidth = c.text.length * 11;
                     if (
-                        player.x < vl.x + vl.width &&
-                        player.x + player.width > vl.x
+                        player.x < c.x + textWidth &&
+                        player.x + player.width > c.x &&
+                        player.y < c.y &&
+                        player.y + player.height > c.y - c.fontSize
                     ) {
                         die();
                         break;
                     }
 
-                    if (vl.durationTimer <= 0) {
-                        boss.verticalLasers.splice(i, 1);
+                    if (c.x < 0 || c.x > canvas.width || c.y < 0 || c.y > canvas.height) {
+                        boss.critiques.splice(i, 1);
                     }
                 }
-            }
 
-            if (boss.currentPattern === "CRITIQUE_ATTACK") {
-                if (boss.patternTimer % 35 === 0 && boss.critiques.length < 5) {
-                    let randomText = critiqueTexts[Math.floor(Math.random() * critiqueTexts.length)];
-                    let startX = boss.x + boss.width / 2;
-                    let startY = boss.y + boss.height / 2;
-                    let targetX = player.x + player.width / 2;
-                    let targetY = player.y + player.height / 2;
-                    let angle = Math.atan2(targetY - startY, targetX - startX);
-                    
-                    boss.critiques.push({
-                        x: startX,
-                        y: startY,
-                        vx: Math.cos(angle) * 7.5,
-                        vy: Math.sin(angle) * 7.5,
-                        text: randomText,
-                        fontSize: 14
-                    });
-                }
-            }
+                if (boss.currentPattern === "HAT_THROW") {
+                    let hat = boss.hat;
+                    hat.angle += 0.18;
 
-            for (let i = boss.critiques.length - 1; i >= 0; i--) {
-                let c = boss.critiques[i];
-                c.x += c.vx;
-                c.y += c.vy;
-
-                let textWidth = c.text.length * 11;
-                if (
-                    player.x < c.x + textWidth &&
-                    player.x + player.width > c.x &&
-                    player.y < c.y &&
-                    player.y + player.height > c.y - c.fontSize
-                ) {
-                    die();
-                    break;
-                }
-
-                if (c.x < 0 || c.x > canvas.width || c.y < 0 || c.y > canvas.height) {
-                    boss.critiques.splice(i, 1);
-                }
-            }
-
-            if (boss.currentPattern === "HAT_THROW") {
-                let hat = boss.hat;
-                hat.angle += 0.25;
-
-                if (hat.state === "THROWING") {
-                    hat.x += hat.vx;
-                    if (hat.x < 180) {
-                        hat.state = "SPINNING";
-                        hat.timer = 0;
-                    }
-                } else if (hat.state === "SPINNING") {
-                    hat.timer++;
-                    if (hat.timer % 18 === 0) {
-                        let count = 8;
-                        for (let i = 0; i < count; i++) {
-                            let angle = (Math.PI * 2 / count) * i + (hat.timer * 0.1);
-                            bossBullets.push({
-                                x: hat.x,
-                                y: hat.y,
-                                vx: Math.cos(angle) * 3.8,
-                                vy: Math.sin(angle) * 3.8,
-                                radius: 5,
-                                color: "#9b59b6"
-                            });
+                    if (hat.state === "THROWING") {
+                        hat.x += hat.vx;
+                        if (hat.x < 180) {
+                            hat.state = "SPINNING";
+                            hat.timer = 0;
+                        }
+                    } else if (hat.state === "SPINNING") {
+                        hat.timer++;
+                        if (hat.timer % 18 === 0) {
+                            let count = 8;
+                            for (let i = 0; i < count; i++) {
+                                let angle = (Math.PI * 2 / count) * i + (hat.timer * 0.1);
+                                bossBullets.push({
+                                    x: hat.x,
+                                    y: hat.y,
+                                    vx: Math.cos(angle) * 2.8,
+                                    vy: Math.sin(angle) * 2.8,
+                                    radius: 5,
+                                    color: "#9b59b6"
+                                });
+                            }
+                        }
+                        if (hat.timer > 110) {
+                            hat.state = "RETURNING";
+                        }
+                    } else if (hat.state === "RETURNING") {
+                        let dx = (boss.x + boss.width / 2) - hat.x;
+                        let dy = (boss.y + 10) - hat.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 12) {
+                            hat.state = "IDLE";
+                            boss.currentPattern = "NONE";
+                            boss.patternTimer = 0;
+                        } else {
+                            hat.x += (dx / dist) * 7.5;
+                            hat.y += (dy / dist) * 7.5;
                         }
                     }
-                    if (hat.timer > 110) {
-                        hat.state = "RETURNING";
-                    }
-                } else if (hat.state === "RETURNING") {
-                    let dx = (boss.x + boss.width / 2) - hat.x;
-                    let dy = (boss.y + 10) - hat.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 12) {
-                        hat.state = "IDLE";
-                        boss.currentPattern = "NONE";
-                        boss.patternTimer = 0;
-                    } else {
-                        hat.x += (dx / dist) * 10.0;
-                        hat.y += (dy / dist) * 10.0;
+
+                    let hatDistX = (player.x + player.width / 2) - hat.x;
+                    let hatDistY = (player.y + player.height / 2) - hat.y;
+                    if (Math.sqrt(hatDistX * hatDistX + hatDistY * hatDistY) < 20 && hat.state !== "IDLE") {
+                        die();
                     }
                 }
 
-                let hatDistX = (player.x + player.width / 2) - hat.x;
-                let hatDistY = (player.y + player.height / 2) - hat.y;
-                if (Math.sqrt(hatDistX * hatDistX + hatDistY * hatDistY) < 20 && hat.state !== "IDLE") {
-                    die();
-                }
-            }
-
-            if (boss.currentPattern === "AGENDA_RAIN") {
-                if (Math.random() < 0.25) {
-                    agendaRain.push({
-                        x: Math.random() * (canvas.width - 100) + 50,
-                        y: -20,
-                        vy: Math.random() * 3.0 + 3.0,
-                        size: Math.floor(Math.random() * 8) + 14,
-                        text: "아젠다"
-                    });
-                }
-            }
-
-            for (let i = agendaRain.length - 1; i >= 0; i--) {
-                let ag = agendaRain[i];
-                ag.y += ag.vy;
-
-                if (
-                    player.x < ag.x + ag.size * 2.5 &&
-                    player.x + player.width > ag.x &&
-                    player.y < ag.y &&
-                    player.y + player.height > ag.y - ag.size
-                ) {
-                    die();
-                    break;
+                if (boss.currentPattern === "AGENDA_RAIN") {
+                    if (Math.random() < 0.25) {
+                        agendaRain.push({
+                            x: Math.random() * (canvas.width - 100) + 50,
+                            y: -20,
+                            vy: Math.random() * 2.0 + 2.0,
+                            size: Math.floor(Math.random() * 8) + 14,
+                            text: "아젠다"
+                        });
+                    }
                 }
 
-                if (ag.y > 380) {
-                    agendaRain.splice(i, 1);
+                for (let i = agendaRain.length - 1; i >= 0; i--) {
+                    let ag = agendaRain[i];
+                    ag.y += ag.vy;
+
+                    if (
+                        player.x < ag.x + ag.size * 2.5 &&
+                        player.x + player.width > ag.x &&
+                        player.y < ag.y &&
+                        player.y + player.height > ag.y - ag.size
+                    ) {
+                        die();
+                        break;
+                    }
+
+                    if (ag.y > 380) {
+                        agendaRain.splice(i, 1);
+                    }
                 }
-            }
 
-            for (let i = bossBullets.length - 1; i >= 0; i--) {
-                let bb = bossBullets[i];
-                bb.x += bb.vx;
-                bb.y += bb.vy;
+                for (let i = bossBullets.length - 1; i >= 0; i--) {
+                    let bb = bossBullets[i];
+                    bb.x += bb.vx;
+                    bb.y += bb.vy;
 
-                let distX = (player.x + player.width / 2) - bb.x;
-                let distY = (player.y + player.height / 2) - bb.y;
-                let distance = Math.sqrt(distX * distX + distY * distY);
+                    let distX = (player.x + player.width / 2) - bb.x;
+                    let distY = (player.y + player.height / 2) - bb.y;
+                    let distance = Math.sqrt(distX * distX + distY * distY);
 
-                if (distance < player.width / 2 + bb.radius) {
-                    die();
-                    break;
+                    if (distance < player.width / 2 + bb.radius) {
+                        die();
+                        break;
+                    }
+
+                    if (bb.x < 0 || bb.x > canvas.width || bb.y < 0 || bb.y > canvas.height) {
+                        bossBullets.splice(i, 1);
+                    }
                 }
-
-                if (bb.x < 0 || bb.x > canvas.width || bb.y < 0 || bb.y > canvas.height) {
-                    bossBullets.splice(i, 1);
-                }
-            }
             } else if (boss.isDying) {
                 boss.deathTimer--;
-                
+
                 // 꾸륵꾸륵 부들부들 효과 (격렬하게 흔들림)
                 boss.scaleX = 1.0 + (Math.random() - 0.5) * 0.8;
                 boss.scaleY = 1.0 + (Math.random() - 0.5) * 0.8;
                 boss.x += (Math.random() - 0.5) * 12;
                 boss.y += (Math.random() - 0.5) * 12;
-                
+
                 screenShakeTimer = 2;
                 shakeIntensity = 5 + (150 - boss.deathTimer) / 10; // 점점 강해지는 진동
 
                 if (boss.deathTimer <= 0) {
                     boss.isDying = false;
                     boss.isDead = true;
-                    
+
                     // 거대한 폭발 파티클
                     for (let i = 0; i < 150; i++) {
                         particles.push({
@@ -618,7 +755,7 @@
                             color: Math.random() > 0.5 ? "#f1c40f" : (Math.random() > 0.5 ? "#e74c3c" : "#ffffff")
                         });
                     }
-                    
+
                     isCleared = true;
                     document.getElementById("replayBtn").style.display = "block";
                 }
@@ -645,7 +782,8 @@
                 "VERTICAL_LASER": "⚡ [땅울림] 파바방 세로 빛줄기 폭격!",
                 "CRITIQUE_ATTACK": "💬 뼈 때리는 크리틱 조준 슈슛 발사!",
                 "HAT_THROW": "🎩 [오디세이] 중절모 투척 & 탄막 회전 공격!",
-                "AGENDA_RAIN": "하늘에서 아젠다 폭우"
+                "AGENDA_RAIN": "하늘에서 아젠다 폭우",
+                "REST": "😴 보스 지침... 극딜 타임!"
             };
             statusText.innerText = `사망 횟수: ${deaths} | 점프 모드: 무한 공중 비행 | 현재 패턴: ${patternNameMap[boss.currentPattern]} | 재훈 보스 체력: ${Math.max(0, boss.hp)} / ${boss.maxHp}`;
         }
@@ -663,24 +801,23 @@
 
             ctx.strokeStyle = "#181818";
             ctx.lineWidth = 1;
+            
+            // 배경 패럴랙스 (스크롤감)
+            let bgOffset = (Date.now() / 20) % 40;
+            for (let y = bgOffset - 40; y < canvas.height; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
             for (let x = 0; x < canvas.width; x += 40) {
                 ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
             }
 
-            ctx.fillStyle = "#222";
-            ctx.fillRect(0, 380, canvas.width, 70);
-            ctx.strokeStyle = "#ff3333";
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(0, 380); ctx.lineTo(canvas.width, 380); ctx.stroke();
-
-            ctx.fillStyle = "#ff3333";
-            for (let s of spikes) {
-                ctx.beginPath();
-                ctx.moveTo(s.x, s.y + s.height);
-                ctx.lineTo(s.x + s.width / 2, s.y);
-                ctx.lineTo(s.x + s.width, s.y + s.height);
-                ctx.closePath();
-                ctx.fill();
+            // 플랫폼 렌더링
+            ctx.fillStyle = "#27ae60";
+            for (let p of platforms) {
+                ctx.fillRect(p.x, p.y, p.width, p.height);
+                ctx.fillStyle = "#2ecc71";
+                ctx.fillRect(p.x, p.y, p.width, 3);
+                ctx.fillStyle = "#27ae60"; // 원래 색상으로 복구
             }
 
             for (let ag of agendaRain) {
@@ -716,7 +853,7 @@
 
                     ctx.fillStyle = "#ffffff";
                     ctx.fillRect(vl.x + vl.width / 2 - 4, 0, 8, 380);
-                    
+
                     ctx.restore();
                 }
             }
@@ -736,14 +873,14 @@
                 ctx.save();
                 ctx.translate(hat.x, hat.y);
                 ctx.rotate(hat.angle);
-                
+
                 ctx.fillStyle = "#2c3e50";
                 ctx.fillRect(-22, -6, 44, 12);
                 ctx.fillStyle = "#34495e";
                 ctx.fillRect(-14, -18, 28, 14);
                 ctx.fillStyle = "#e74c3c";
                 ctx.fillRect(-14, -8, 28, 4);
-                
+
                 ctx.restore();
             }
 
@@ -757,17 +894,17 @@
             if (!boss.isDead) {
                 ctx.save();
                 ctx.translate(boss.x + boss.width / 2, boss.y + boss.height / 2);
-            ctx.scale(boss.scaleX, boss.scaleY);
+                ctx.scale(boss.scaleX, boss.scaleY);
 
-            if (isImageLoaded) {
-                ctx.drawImage(customBossImg, -boss.width / 2, -boss.height / 2, boss.width, boss.height);
-            } else {
-                ctx.fillStyle = "#e74c3c";
-                ctx.fillRect(-boss.width / 2, -boss.height / 2, boss.width, boss.height);
-                ctx.fillStyle = "#f1c40f";
-                ctx.fillRect(-boss.width / 2 + 12, -boss.height / 2 + 15, 21, 25);
-            }
-            ctx.restore();
+                if (isImageLoaded) {
+                    ctx.drawImage(customBossImg, -boss.width / 2, -boss.height / 2, boss.width, boss.height);
+                } else {
+                    ctx.fillStyle = "#e74c3c";
+                    ctx.fillRect(-boss.width / 2, -boss.height / 2, boss.width, boss.height);
+                    ctx.fillStyle = "#f1c40f";
+                    ctx.fillRect(-boss.width / 2 + 12, -boss.height / 2 + 15, 21, 25);
+                }
+                ctx.restore();
             }
 
             ctx.fillStyle = "#f1c40f";
@@ -830,7 +967,7 @@
             let hpRatio = Math.max(0, boss.hp) / boss.maxHp;
             ctx.fillStyle = "#ff3333";
             ctx.fillRect(152, 17, 496 * hpRatio, 10);
-            
+
             ctx.fillStyle = "#fff";
             ctx.font = "12px 'Courier New'";
             ctx.fillText("I WANNA BE THE JAEHUN - CRITIQUE HELL", 220, 11);
@@ -841,16 +978,16 @@
 
         function runGame(currentTime) {
             requestAnimationFrame(runGame);
-            
+
             const deltaTime = currentTime - lastTime;
-            
+
             // 60FPS(약 16.67ms) 제한 및 모니터 오차율 방어(-1.5ms 여유값)
             // 여유값을 주어야 60Hz 모니터에서 프레임이 스킵되어 뚝뚝 끊기는 현상이 방지됩니다.
             if (deltaTime >= fpsInterval - 1.5) {
                 // 초과된 시간만큼 보정하여 부드럽게 유지
                 lastTime = currentTime - (deltaTime % fpsInterval);
-                
-                if (!isPaused) {
+
+                if (!isPaused && !isStoryMode) {
                     update();
                 }
                 draw();
@@ -860,4 +997,5 @@
         requestAnimationFrame(runGame);
     </script>
 </body>
+
 </html>
